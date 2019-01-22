@@ -27,16 +27,11 @@ n_sig = [2, 4, 8, 16, 32, 64, 128]
 m = []
 sig = []
 Q = []
-a = []
 for j in range(max(n_sig)):
     m.append(random.getrandbits(hlen).to_bytes(hsize, 'big'))
     q = random.getrandbits(ec.nlen) % ec.n
     sig.append(ecssa_sign(ec, hf, m[j], q))
     Q.append(pointMult(ec, q, ec.G))
-    if j != 0:
-        a.append(random.getrandbits(ec.nlen) % ec.n)
-    else:
-        a.append(1) # FIXME: ?
 
 for n in n_sig:
 
@@ -48,7 +43,7 @@ for n in n_sig:
 
     # batch
     start = time.time()
-    assert ecssa_batch_validation(ec, hf, m, Q, a, sig)
+    assert ecssa_batch_validation(ec, hf, m, Q, sig)
     elapsed2 = time.time() - start
 
     print(n, elapsed2 / elapsed1)
