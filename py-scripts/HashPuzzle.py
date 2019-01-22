@@ -21,8 +21,8 @@ else:
     zeros = int(zerostr)
 assert (zeros > 0), "the number of zeros to look for must be greater than zero"
 
-print("\nstring is:", msg)
-print("looking for", zeros, "zeros")
+print(f"\nstring is: {msg}")
+print(f"looking for {zeros} zeros")
 
 start = time.time()
 
@@ -42,14 +42,14 @@ while (n[zeros-1] == 0 and i < maxEval):
 
 elapsed = round(time.time() - start)
 
-print("\nperformed evaluations:", i, "/", maxEval)
-print("elapsed time         :", elapsed, "seconds")
-print("zeros found:", n)
+print(f"\nperformed evaluations: {i} / {maxEval}")
+print(f"elapsed time         : {elapsed} seconds")
+print(f"\nzeros found: {n}")
 
 if (n[zeros-1] == 1):
     print("nonce      :", nonce)
     string = msg+str(nonce)
-    print(string)
+    print("\n"+string)
     print(hashlib.sha256(string.encode()).hexdigest())
 else:
     print("nonce not found")
