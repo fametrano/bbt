@@ -12,7 +12,7 @@ import random
 import time
 
 from btclib.ec import _jac_from_aff, _pointMultAffine, _pointMultJacobian
-from btclib.ecurves import secp256k1
+from btclib.curves import secp256k1
 
 random.seed(42)
 

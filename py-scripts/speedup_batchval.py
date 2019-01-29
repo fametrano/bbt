@@ -13,8 +13,8 @@ import time
 from hashlib import sha256
 
 from btclib.ec import pointMult
-from btclib.ecurves import secp256k1
-from btclib.ecssa import ecssa_sign, ecssa_verify, ecssa_batch_validation
+from btclib.curves import secp256k1
+from btclib.ssa import ecssa_sign, ecssa_verify, ecssa_batch_verify
 
 random.seed(42)
 
@@ -43,7 +43,7 @@ for n in n_sig:
 
     # batch
     start = time.time()
-    assert ecssa_batch_validation(ec, hf, m, Q, sig)
+    assert ecssa_batch_verify(ec, hf, m, Q, sig)
     elapsed2 = time.time() - start
 
     print(n, elapsed2 / elapsed1)

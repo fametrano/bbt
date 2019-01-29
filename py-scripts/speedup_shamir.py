@@ -12,7 +12,7 @@ import random
 import time
 
 from btclib.ec import pointMult, DblScalarMult
-from btclib.ecurves import secp256k1
+from btclib.curves import secp256k1
 
 random.seed(42)
 
