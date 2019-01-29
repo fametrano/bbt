@@ -20,7 +20,7 @@ random.seed(42)
 
 ec = secp256k1
 hf = sha256
-hsize =hf().digest_size
+hsize = hf().digest_size
 hlen = hsize * 8
 
 n_sig = [2, 4, 8, 16, 32, 64, 128]
