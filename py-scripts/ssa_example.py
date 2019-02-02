@@ -10,7 +10,7 @@
 
 from hashlib import sha256 as hf
 
-from btclib.ec import mult
+from btclib.curve import mult
 from btclib.curves import secp256k1 as ec
 
 print("\n*** EC:")
@@ -37,10 +37,10 @@ print("    h1:", hex(h1))
 
 print("\n*** Signature")
 # ephemeral key k must be kept secret and never reused !!!!!
-# good choice: k = hf(msg|q)
+# good choice: k = hf(q||msghd)
 # different for each msg, private because of q
-temp = msg1+hex(q)
-k_bytes = hf(temp.encode()).digest()
+temp = q.to_bytes(32, 'big') + msg1.encode()
+k_bytes = hf(temp).digest()
 k1 = int.from_bytes(k_bytes, 'big') % ec.n
 assert k1 != 0
 
@@ -50,8 +50,7 @@ s1 = (k1-h1*q) % ec.n
 # if s1 == 0 (extremely unlikely for large ec.n) go back to a different ephemeral key
 assert s1 != 0
 
-print(" K1[0]:", hex(K1[0]))
-print(" K1[1]:", hex(K1[1]))
+print("     r:", hex(K1[0]))
 print("    s1:", hex(s1))
 
 print("*** Signature Verification")
@@ -80,8 +79,7 @@ s2 = (k2-h2*q) %ec.n
 # if s2 == 0 (extremely unlikely) go back to a different ephemeral key
 assert s2 != 0
 
-print(" K2[0]:", hex(K2[0]))
-print(" K2[1]:", hex(K2[1]))
+print("     r:", hex(K2[0]))
 print("    s2:", hex(s2))
 
 print("*** Signature Verification")

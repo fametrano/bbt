@@ -11,7 +11,7 @@
 from hashlib import sha256 as hf
 
 from btclib.numbertheory import mod_inv
-from btclib.ec import mult
+from btclib.curve import mult
 from btclib.curves import secp256k1 as ec
 from btclib.dsa import sign
 
@@ -39,10 +39,10 @@ print("    h1:", hex(h1))
 
 print("\n*** Signature")
 # ephemeral key k must be kept secret and never reused !!!!!
-# good choice: k = hf(msg||q)
+# good choice: k = hf(q||msghd)
 # different for each msg, private because of q
-temp = msg1+hex(q)
-k_bytes = hf(temp.encode()).digest()
+temp = q.to_bytes(32, 'big') + msg1.encode()
+k_bytes = hf(temp).digest()
 k1 = int.from_bytes(k_bytes, 'big') % ec.n
 assert k1 != 0
 print("eph k1:", hex(k1))
@@ -111,6 +111,9 @@ assert r != 0
 s2 = ((h2 + r*q)*mod_inv(k2, ec.n)) %ec.n
 # if s2 == 0 (extremely unlikely for large ec.n) go back to a different ephemeral key
 assert s2 != 0
+
+# bitcoin canonical 'low-s' encoding
+if s2 > ec.n/2: s2 = ec.n - s2
 
 print("     r:", hex(r))
 print("    s2:", hex(s2))
