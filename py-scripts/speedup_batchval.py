@@ -12,9 +12,9 @@ import random
 import time
 from hashlib import sha256
 
-from btclib.ec import pointMult
+from btclib.curve import mult
 from btclib.curves import secp256k1
-from btclib.ssa import ecssa_sign, ecssa_verify, ecssa_batch_verify
+from btclib.ssa import sign, verify, batch_verify
 
 random.seed(42)
 
@@ -30,20 +30,20 @@ Q = []
 for j in range(max(n_sig)):
     m.append(random.getrandbits(hlen).to_bytes(hsize, 'big'))
     q = random.getrandbits(ec.nlen) % ec.n
-    sig.append(ecssa_sign(ec, hf, m[j], q))
-    Q.append(pointMult(ec, q, ec.G))
+    sig.append(sign(ec, hf, m[j], q))
+    Q.append(mult(ec, q, ec.G))
 
 for n in n_sig:
 
     # no batch
     start = time.time()
     for j in range(n):
-        assert ecssa_verify(ec, hf, m[j], Q[j], sig[j])
+        assert verify(ec, hf, m[j], Q[j], sig[j])
     elapsed1 = time.time() - start
 
     # batch
     start = time.time()
-    assert ecssa_batch_verify(ec, hf, m, Q, sig)
+    assert batch_verify(ec, hf, m, Q, sig)
     elapsed2 = time.time() - start
 
     print(n, elapsed2 / elapsed1)

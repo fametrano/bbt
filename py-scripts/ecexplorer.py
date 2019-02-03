@@ -82,7 +82,7 @@ for prime in primes:
             except:
                 gx += 1
         print("ec", prime, "_", maxorderlessthanprime, " = ",
-              "EC(", maxorderlessthanprimea, ", ",
+              "Curve(", maxorderlessthanprimea, ", ",
               maxorderlessthanprimeb, ", ", prime, ", ", "(", gx, ",", gy,
               ")", ", ", maxorderlessthanprime, ")", sep="")
     if (maxordera != -1):
@@ -97,6 +97,6 @@ for prime in primes:
             except:
                 gx += 1
         print("ec", prime, "_", maxorder, " = ",
-              "EC(", maxordera, ", ",
+              "Curve(", maxordera, ", ",
               maxorderb, ", ", prime, ", ", "(", gx, ",", gy,
               ")", ", ", maxorder, ")", sep="")

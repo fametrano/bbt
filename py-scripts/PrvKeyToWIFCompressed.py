@@ -9,7 +9,7 @@
 # or distributed except according to the terms contained in the LICENSE file.
 
 from hashlib import sha256
-from btclib.base58 import b58encode, b58encode_check, b58decode, b58decode_check
+from btclib.base58 import encode, encode_check, decode, decode_check
 
 # https://en.bitcoin.it/wiki/Wallet_import_format
 print("\n****** Private ECDSA Key to WIF ******")
@@ -38,10 +38,10 @@ addr = ExtKey + h2[:4]
 print(addr.hex())
 
 print("\n*** [7] Base58 encoding")
-wif = b58encode(addr)
+wif = encode(addr)
 print(wif)
 assert wif == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
-assert b58encode_check(ExtKey) == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
+assert encode_check(ExtKey) == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
 
 print("\n****** WIF to private key ******")
 
@@ -51,14 +51,14 @@ compressed = len(wif)-51
 print ("compressed" if (compressed==1) else "uncompressed")
 
 print("\n*** [2] Base58 decoding")
-addr = b58decode(wif)
+addr = decode(wif)
 print(addr.hex())
 
 print("\n*** [3] Extended key (checksum verified)")
 ExtKey, checksum = addr[:-4], addr[-4:]
 verified = ( sha256(sha256(ExtKey).digest()).digest()[:4] == checksum )
 print(ExtKey.hex() + " (" + ("true" if verified else "false") + ")")
-print(b58decode_check(wif).hex())
+print(decode_check(wif).hex())
 
 print("\n*** [4] Private key")
 p2 = ExtKey[1:-1].hex() if compressed else ExtKey[1:].hex()

@@ -14,9 +14,9 @@
 import random
 from hashlib import sha256 as hf
 
-from btclib.ec import pointMult
-from btclib.ecurves import secp256k1 as ec
-from btclib.ecutils import bits2int
+from btclib.curve import mult
+from btclib.curves import secp256k1 as ec
+from btclib.utils import int_from_bits
 
 # master prvkey
 mprvkey = random.getrandbits(ec.nlen) % ec.n
@@ -27,8 +27,8 @@ nKeys = 3
 for i in range(nKeys):
   ibytes = i.to_bytes(ec.nlen, 'big')
   hd = hf(ibytes + mprvkey_bytes).digest()
-  q = bits2int(ec, hd)
-  Q = pointMult(ec, q, ec.G)
+  q = int_from_bits(ec, hd)
+  Q = mult(ec, q, ec.G)
   print('\nprvkey#', i, ':', hex(q))
   print('Pubkey#',   i, ':', hex(Q[0]))
   print('           ',       hex(Q[1]))

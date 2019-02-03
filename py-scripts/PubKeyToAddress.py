@@ -10,9 +10,9 @@
 
 import hashlib
 
-from btclib.ec import pointMult
-from btclib.ecurves import secp256k1 as ec
-from btclib.base58 import b58encode_check, b58encode, b58decode_check
+from btclib.curve import mult
+from btclib.curves import secp256k1 as ec
+from btclib.base58 import encode_check, encode, decode_check
 
 # https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses
 prvkey = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
@@ -21,7 +21,7 @@ prvkey = prvkey % ec.n
 print("\n*** [0] Private ECDSA Key:")
 print(hex(prvkey))
 
-PubKey = pointMult(ec, prvkey, ec.G)
+PubKey = mult(ec, prvkey, ec.G)
 PubKey_bytes = b'\x04' + PubKey[0].to_bytes(32, byteorder='big') + PubKey[1].to_bytes(32, byteorder='big')
 print("\n*** [1] Public Key (uncompressed):")
 print(PubKey_bytes.hex())
@@ -55,7 +55,7 @@ addr = vh160 + h4[:4]
 print(addr.hex())
 
 print("\n*** [9] Base58 encoded address from uncompressed PubKey_bytes")
-address = b58encode(addr)
+address = encode(addr)
 assert (address == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
 print(address)
 
@@ -63,7 +63,7 @@ print("\n*** steps [5]-[9] are also known as Base58Check encode")
 
 
 def pubkey_bytes_from_prvkey(prvkey, compressed=True):
-    PubKey = pointMult(ec, prvkey, ec.G)
+    PubKey = mult(ec, prvkey, ec.G)
     if compressed:
         prefix = b'\x02' if (PubKey[1] % 2 == 0) else b'\x03'
         return prefix + PubKey[0].to_bytes(32, byteorder='big')
@@ -82,7 +82,7 @@ def hash160(inp):
 
 def address_from_pubkey_bytes(inp, version=b'\x00'):
     vh160 = version + hash160(inp)
-    return b58encode_check(vh160)
+    return encode_check(vh160)
 
 print("\n*** [9] base58 encoded address from compressed PubKey_bytes")
 address = address_from_pubkey_bytes(PubKey_bytes)
@@ -90,7 +90,7 @@ assert (address == b'1PMycacnJaSqwwJqjawXBErnLsZ7RkXUAs')
 print(address)
 
 def hash_160_from_address(addr):
-    return b58decode_check(addr)[1:21]
+    return decode_check(addr)[1:21]
 
 print("\n*** h160 from address")
 print(hash_160_from_address(address).hex())
