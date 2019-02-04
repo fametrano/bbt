@@ -23,6 +23,7 @@ hf = sha256
 hsize = hf().digest_size
 hlen = hsize * 8
 
+# n = 1 loops forever and does not really test batch verify
 n_sig = [2, 4, 8, 16, 32, 64, 128]
 m = []
 sig = []
@@ -43,7 +44,7 @@ for n in n_sig:
 
     # batch
     start = time.time()
-    assert batch_verify(ec, hf, m, Q, sig)
+    assert batch_verify(ec, hf, m[:n], Q[:n], sig[:n])
     elapsed2 = time.time() - start
 
     print(n, elapsed2 / elapsed1)
