@@ -6,4 +6,4 @@ Material for the Bitcoin and Blockchain Technology course of Milano Bicocca and 
 - _excel_: includes Excel spreadsheets with elliptic curve examples;
 - _regtest-lab`_: includes information for a regtest session using Bitcoin Core.
 
-Slides are available from the course page: <https://www.ametrano.net/bbt/>
+Slides are available from the course page: <www.ametrano.net/bbt/>
