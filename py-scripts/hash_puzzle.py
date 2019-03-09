@@ -14,7 +14,7 @@ import time
 msg = input('insert string (return for "Hello, world!"): ')
 if msg == "": msg = "Hello, world!"
 
-zerostr = input('n of zeros (return for 4 zeros): ')
+zerostr = input('number of required zeros (return for 4 zeros): ')
 if zerostr == "":
     zeros = 4
 else:
