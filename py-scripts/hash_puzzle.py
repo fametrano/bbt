@@ -19,7 +19,7 @@ if zerostr == "":
     zeros = 4
 else:
     zeros = int(zerostr)
-assert (zeros > 0), "the number of zeros to look for must be greater than zero"
+assert zeros > 0, "the number of zeros to look for must be greater than zero"
 
 print(f"\nstring is: {msg}")
 print(f"looking for {zeros} zeros")
