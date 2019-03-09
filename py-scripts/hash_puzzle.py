@@ -22,7 +22,7 @@ else:
 assert zeros > 0, "the number of zeros to look for must be greater than zero"
 
 print(f"\nstring is: {msg}")
-print(f"looking for {zeros} zeros")
+print(f"{zeros} required zeros")
 
 # n[i] is used to count the results starting with i+1 zeros
 n = []
