@@ -20,49 +20,49 @@ print(ec)
 
 q = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
 q = q % ec.n
-print("\n*** Keys:")
+print("\n*** Key Generation:")
 print("prvkey:   ", hex(q))
 
 Q = mult(ec, q, ec.G)
 print("PubKey:", "02" if (Q[1] % 2 == 0) else "03", hex(Q[0]))
 
 print("\n*** Message to be signed")
-msg1 = "Paolo is afraid of ephemeral random numbers"
-print(msg1)
+msg = "Paolo is afraid of ephemeral random numbers"
+print(msg)
 
 print("*** Hash digest of the message")
-h_bytes = hf(msg1.encode()).digest()
+msghd = hf(msg.encode()).digest()
 # hash(msg) must be transformed into an integer modulo ec.n:
-h1 = int.from_bytes(h_bytes, 'big') % ec.n
-assert h1 != 0
-print("    h1:", hex(h1))
+c = int.from_bytes(msghd, 'big') % ec.n
+assert c != 0
+print("    c:", hex(c))
 
-print("\n*** Signature")
+print("\n*** Sign Message")
 # ephemeral key k must be kept secret and never reused !!!!!
-# good choice: k = hf(q||msghd)
+# good choice: k = hf(q||c)
 # different for each msg, private because of q
-temp = q.to_bytes(32, 'big') + msg1.encode()
+temp = q.to_bytes(32, 'big') + c.to_bytes(32, 'big')
 k_bytes = hf(temp).digest()
-k1 = int.from_bytes(k_bytes, 'big') % ec.n
-assert k1 != 0
-print("eph k1:", hex(k1))
+k = int.from_bytes(k_bytes, 'big') % ec.n
+assert 0 < k < ec.n, "Invalid ephemeral key"
+print("eph k:", hex(k))
 
-K1 = mult(ec, k1, ec.G)
+K = mult(ec, k, ec.G)
 
-r = K1[0] % ec.n
-# if r == 0 (extremely unlikely for large ec.n) go back to a different ephemeral key
+r = K[0] % ec.n
+# if r == 0 (extremely unlikely for large ec.n) go back to a different k
 assert r != 0
 
-s1 = ((h1 + r*q)*mod_inv(k1, ec.n)) % ec.n
-# if s1 == 0 (extremely unlikely for large ec.n) go back to a different ephemeral key
-assert s1 != 0
+s = (c + r*q) * mod_inv(k, ec.n) % ec.n
+# if s == 0 (extremely unlikely for large ec.n) go back to a different k
+assert s != 0
 
-print("     r:", hex(r))
-print("    s1:", hex(s1))
+print("    r:", hex(r))
+print("    s:", hex(s))
 
-print("*** Signature Verification")
-w = mod_inv(s1, ec.n)
-u = (h1*w) %ec.n
+print("*** Verify Signature")
+w = mod_inv(s, ec.n)
+u = (c*w) %ec.n
 v = (r*w) %ec.n
 assert u != 0
 assert v != 0
@@ -72,14 +72,14 @@ x, y = ec.add(U, V)
 print(r == x %ec.n)
 
 print("\n*** Malleated Signature")
-s1m = ec.n - s1
-print("     r:", hex(r))
-print("   *s1:", hex(s1m))
+sm = ec.n - s
+print("    r:", hex(r))
+print("   sm:", hex(sm))
 
 print("*** Malleated Signature Verification")
-w = mod_inv(s1m, ec.n)
-u = (h1*w) %ec.n
-v = (r*w) %ec.n
+w = mod_inv(sm, ec.n)
+u = c*w %ec.n
+v = r*w %ec.n
 assert u != 0
 assert v != 0
 U = mult(ec, u, ec.G)
@@ -92,39 +92,37 @@ msg2 = "and Paolo is right to be afraid"
 print(msg2)
 
 print("*** Hash digest of the message")
-h_bytes = hf(msg2.encode()).digest()
+msghd2 = hf(msg2.encode()).digest()
 # hash(msg) must be transformed into an integer modulo ec.n:
-h2 = int.from_bytes(h_bytes, 'big') % ec.n
-assert h2 != 0
-print("    h2:", hex(h2))
+c2 = int.from_bytes(msghd, 'big') % ec.n
+assert c2 != 0
+print("    c2:", hex(c2))
 
 print("\n*** Signature")
-k2 = k1 #very bad! Never reuse the same ephemeral key!!!
+#very bad! Never reuse an ephemeral key!!!
+k2 = k
 print("eph k2:", hex(k2))
 
 K2 = mult(ec, k2, ec.G)
 
 r = K2[0] % ec.n
-# if r == 0 (extremely unlikely for large ec.n) go back to a different ephemeral key
+# if r == 0 (extremely unlikely for large ec.n) go back to a different k
 assert r != 0
 
-s2 = ((h2 + r*q)*mod_inv(k2, ec.n)) %ec.n
-# if s2 == 0 (extremely unlikely for large ec.n) go back to a different ephemeral key
+s2 = (c2 + r*q) * mod_inv(k2, ec.n) %ec.n
+# if s2 == 0 (extremely unlikely for large ec.n) go back to a different k
 assert s2 != 0
-
-# bitcoin canonical 'low-s' encoding
-if s2 > ec.n/2: s2 = ec.n - s2
 
 print("     r:", hex(r))
 print("    s2:", hex(s2))
 
 print("*** Signature Verification")
 w = mod_inv(s2, ec.n)
-u = (h2*w) %ec.n
-v = (r*w) %ec.n
+u = c2*w %ec.n
+v = r*w %ec.n
 assert u != 0
 assert v != 0
 U = mult(ec, u, ec.G)
 V = mult(ec, v, Q)
 x, y = ec.add(U, V)
-print(r == x %ec.n)
+print(r == x % ec.n)
