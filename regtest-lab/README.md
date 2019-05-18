@@ -90,10 +90,10 @@ For a [full command list](https://bitcoincore.org/en/doc/0.17.0/):
   $ bitcoin-cli help
   ```
 
-For help about a peculiar command (e.g. [generate](https://bitcoincore.org/en/doc/0.17.0/rpc/generating/generate/)):
+For help about a peculiar command (e.g. [generatetoaddress](https://bitcoincore.org/en/doc/0.18.0/rpc/generating/generatetoaddress/)):
 
   ```
-  $ bitcoin-cli generate
+  $ bitcoin-cli generatetoaddress
   ```
 
 To go beyond this short lab class, please see <https://github.com/dginst/Learning-Bitcoin-from-the-Command-Line>
