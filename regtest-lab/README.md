@@ -20,7 +20,9 @@ In general any command line must starts with `bitcoin-cli -regtest [...]` to use
 * generate 101 blocks  
 
   ```shell
-  $ bitcoin-cli -regtest generate 101
+  $ bitcoin-cli -regtest getnewaddress
+  bcrt1q26dwxdz0ht62gpy4py6jukc4qm7yvkw22hadar
+  $ bitcoin-cli -regtest generatetoaddress bcrt1q26dwxdz0ht62gpy4py6jukc4qm7yvkw22hadar
   ```
 
 ## Digital Signature Using `bitcoin-cli`
@@ -29,12 +31,12 @@ In general any command line must starts with `bitcoin-cli -regtest [...]` to use
 
   ```shell
   $ bitcoin-cli -regtest getnewaddress "used to sign" legacy
-  mqmgZrj7SiyhzRAuDyoFZLwgfUxFVTZVKh
+  mpXZvfkgYhpH2JR7bSrVMjxji3KnJi2s8s
 
-  $ bitcoin-cli -regtest signmessage "mqmgZrj7SiyhzRAuDyoFZLwgfUxFVTZVKh" "Hello, World"
-  INQtUSJsBFe6NIt499uuugBoBypU+bhoWzgU9hp+ZZ6eJiRFU+Ins5erSXI7YqBpeth8NtJAuu/MOOLrJFoFl2I=
+  $ bitcoin-cli -regtest signmessage "mpXZvfkgYhpH2JR7bSrVMjxji3KnJi2s8s" "Hello, world!"
+  H6dXIhm+8cWKhYPv3e2zOba8+Nsnkh8osrZZGh4OPRR3MJk/HyzcaelHnhakg/YkUIWiFz73eY/klLgeCke8WwQ=
 
-  $ bitcoin-cli -regtest verifymessage "mqmgZrj7SiyhzRAuDyoFZLwgfUxFVTZVKh" "INQtUSJsBFe6NIt499uuugBoBypU+bhoWzgU9hp+ZZ6eJiRFU+Ins5erSXI7YqBpeth8NtJAuu/MOOLrJFoFl2I=" "Hello, World"
+  $ bitcoin-cli -regtest verifymessage "mpXZvfkgYhpH2JR7bSrVMjxji3KnJi2s8s" "H6dXIhm+8cWKhYPv3e2zOba8+Nsnkh8osrZZGh4OPRR3MJk/HyzcaelHnhakg/YkUIWiFz73eY/klLgeCke8WwQ=" "Hello, world!"
   true
   ```
 
