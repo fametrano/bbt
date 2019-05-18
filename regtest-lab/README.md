@@ -3,9 +3,9 @@
 ## Install Bitcoin Core
 
 Please install and run Bitcoin Core for your platform, following the instructions provided in
-[windows.md](https://github.com/dginst/BitcoinBlockchainTechnology/blob/master/regtest-lab/windows.md),
-[linux.md](https://github.com/dginst/BitcoinBlockchainTechnology/blob/master/regtest-lab/linux.md), or
-[mac-os.md](https://github.com/dginst/BitcoinBlockchainTechnology/blob/master/regtest-lab/mac-os.md).
+[windows.md](https://github.com/dginst/bbt/blob/master/regtest-lab/windows.md),
+[linux.md](https://github.com/dginst/bbt/blob/master/regtest-lab/linux.md), or
+[mac-os.md](https://github.com/dginst/bbt/blob/master/regtest-lab/mac-os.md).
 
 ## The `bitcoin-cli` Command Line Tool
 
