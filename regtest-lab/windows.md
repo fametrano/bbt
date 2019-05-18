@@ -1,11 +1,11 @@
 # Bitcoin Core Setup (Windows)
 
 1. Download and install Bitcoin Core from <https://bitcoincore.org/en/download/>. You can pick one of the following two version:
-   * portable version (zip) <https://bitcoincore.org/bin/bitcoin-core-0.18.0/bitcoin-0.18.0-win64.zip>;
-     unzip it in your favorite location;
+   * portable version (zip) <https://bitcoincore.org/bin/bitcoin-core-0.18.0/bitcoin-0.18.0-win64.zip>;  
+     unzip it in your favorite location;  
      in the following `C:\your\bitcoinfolder` is where the `bin`, `include`, `lib`, and `share` folders are located
-   * regular version (exe) <https://bitcoincore.org/bin/bitcoin-core-0.18.0/bitcoin-0.18.0-win64-setup.exe>;
-     execute the installer;
+   * regular version (exe) <https://bitcoincore.org/bin/bitcoin-core-0.18.0/bitcoin-0.18.0-win64-setup.exe>;  
+     execute the installer;  
      in the following `C:\your\bitcoinfolder` is where the `bin`, `include`, `lib`, and `share` folders are located (usually it should be `C:\Program Files\Bitcoin\bitcoin-qt.exe`)
 
 2. add the `C:\your\bitcoinfolder\bin folder` (the one including the `bitcoinqt`, `bitcoind`, and `bitcoin-cli` executables) to your %PATH% environment variable, so that whenever you will call the bitcoin executables from the command line, Windows will know where to find them even if you are not in the `c:\your\bitcoinfolder\bin` folder. You can do this
