@@ -28,7 +28,7 @@ In general any command line must starts with `bitcoin-cli -regtest [...]` to use
   mpXZvfkgYhpH2JR7bSrVMjxji3KnJi2s8s
   ```
 
-* use this new address (not the `mpXZvfkgYhpH2JR7bSrVMjxji3KnJi2s8s` above!) to sign a message (e.g. _"Hello, world!"_). Note that `bitcoin-cli` uses the address to retrieve in background the corresponding private key actually used to sign:
+* use this new address (not the `mpXZvfkgYhpH2JR7bSrVMjxji3KnJi2s8s` above!) to sign a message (e.g. `Hello, world!`). Note that `bitcoin-cli` uses the address to retrieve in background the corresponding private key actually used to sign:
 
   ```shell
   $ bitcoin-cli -regtest signmessage your_signing_address "Hello, world!"
