@@ -1,6 +1,6 @@
 # Bitcoin Core: `regtest` Lab Session
 
-## Install and Run Bitcoin Core in `regtest` Mode
+## Install and Run Bitcoin Core
 
 Please install and run Bitcoin Core in `regtest` mode, following the instructions provided for your platform:
 
@@ -172,4 +172,4 @@ For help about a peculiar command (e.g. [generatetoaddress](https://bitcoincore.
   $ bitcoin-cli generatetoaddress
   ```
 
-To go beyond this short lab class, please see <https://github.com/dginst/Learning-Bitcoin-from-the-Command-Line>
+To go beyond this short lab, please see <https://github.com/dginst/Learning-Bitcoin-from-the-Command-Line>
