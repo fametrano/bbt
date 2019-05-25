@@ -79,18 +79,23 @@ In general any command line must starts with `bitcoin-cli -regtest [...]` to use
 
 ## A Simple Transaction
 
-* generating 101 blocks has created a spendable balance associated to your address:
+* generating 101 blocks has created a spendable balance associated to your wallet:
 
   ```shell
   $ bitcoin-cli -regtest getbalance
   50.00000000
   ```
 
-* send part of your balance (e.g. 0.99 coins) to `bcrt1qry4w50spgegfaemv7kl8q5efkfk3gpc5zvxnrd` (or any alternative address provided by a lab member) and inspect the transaction
+* send part of your balance (e.g. 0.99 coins) to `bcrt1qry4w50spgegfaemv7kl8q5efkfk3gpc5zvxnrd` (or any alternative address provided by a lab member) and note the returned transaction ID (`txid`)
 
   ```shell
   $ bitcoin-cli -regtest sendtoaddress bcrt1qry4w50spgegfaemv7kl8q5efkfk3gpc5zvxnrd 0.99
   3b11a2372173c4344edd0040a2a15d429c994287cc9cc0b9702546384c4ad4a1
+  ```
+
+* inspect the transaction (of course replacing the `3b11a2372173c4344edd0040a2a15d429c994287cc9cc0b9702546384c4ad4a1` below with your `txid`)
+
+  ```shell
   $ bitcoin-cli -regtest gettransaction 3b11a2372173c4344edd0040a2a15d429c994287cc9cc0b9702546384c4ad4a1
   {
   "amount": -0.99000000,
@@ -117,7 +122,7 @@ In general any command line must starts with `bitcoin-cli -regtest [...]` to use
   }
   ```
 
-* no confirmation yet; now generate one more block and notice that the trasaction has been confirmed:
+* no confirmation yet; now generate one more block and notice that the trasaction has been confirmed (again: replace the `3b11a2372173c4344edd0040a2a15d429c994287cc9cc0b9702546384c4ad4a1` below with your `txid`):
 
   ```shell
   $ bitcoin-cli -regtest generatetoaddress 1 your_address
@@ -160,7 +165,7 @@ In general any command line must starts with `bitcoin-cli -regtest [...]` to use
 
 ## Further Material
 
-For a [full command list](https://bitcoincore.org/en/doc/0.17.0/):
+For a [full command list](https://bitcoincore.org/en/doc/0.18.0/):
 
   ```
   $ bitcoin-cli help
@@ -172,4 +177,4 @@ For help about a peculiar command (e.g. [generatetoaddress](https://bitcoincore.
   $ bitcoin-cli generatetoaddress
   ```
 
-To go beyond this short lab, please see <https://github.com/dginst/Learning-Bitcoin-from-the-Command-Line>
+To go beyond this short lab, please see <https://github.com/ChristopherA/Learning-Bitcoin-from-the-Command-Line>
