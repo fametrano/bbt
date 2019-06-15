@@ -1,2 +1,2 @@
-if not exist "..\bitcoin-data" mkdir "..\bitcoin-data"
-"bin\bitcoin-qt.exe" -datadir="..\bitcoin-data" -addresstype=bech32 -walletrbf=1
+start bin\bitcoin-qt.exe -server -rpcallowip=127.0.0.1 -addresstype=bech32 -walletrbf
+::start cmd /k cd bin

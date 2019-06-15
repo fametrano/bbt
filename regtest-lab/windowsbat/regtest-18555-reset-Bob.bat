@@ -1,1 +1,1 @@
-rmdir "%APPDATA%\Bitcoin\regtestBob" /s /q
+rmdir "%APPDATA%\Bitcoin\regtest_Bob" /s /q
