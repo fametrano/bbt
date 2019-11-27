@@ -38,7 +38,7 @@ checksummed_payload = payload + h2[:4]
 print(checksummed_payload.hex())
 
 print("\n*** [7] Base58 encoding")
-wif = base58.encode(checksummed_payload)
+wif = base58._encode(checksummed_payload)
 print(wif)
 assert wif == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
 assert base58.encode_check(payload) == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
@@ -51,7 +51,7 @@ compressed = len(wif)-51
 print ("compressed" if (compressed==1) else "uncompressed")
 
 print("\n*** [2] Base58 decoding")
-checksummed_payload = base58.decode(wif)
+checksummed_payload = base58._decode(wif)
 print(checksummed_payload.hex())
 
 print("\n*** [3] Extended key (checksum verified)")

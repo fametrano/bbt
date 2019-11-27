@@ -7,7 +7,7 @@ from btclib.curve import mult
 from btclib.curves import secp256k1 as ec
 from btclib.utils import octets_from_point
 from btclib.base58 import encode_check
-from btclib.wifaddress import _h160
+from btclib.utils import h160
 
 ## https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 
@@ -55,7 +55,7 @@ assert ext_pub == b"xpub661MyMwAqRbcEZVB4dScxMAdx6d4nFc9nvyvH3v4gJL378CSRZiYmhRo
 depth = b'\x01'
 child_n = 0 + 0x80000000 #hardened
 child_number = child_n.to_bytes(4, 'big')
-fingerprint = _h160(Qbytes)[:4]
+fingerprint = h160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0]>127 else Qbytes

@@ -56,9 +56,10 @@ addr = vh160 + h4[:4]
 print(addr.hex())
 
 print("\n*** [9] Base58 encoded address from uncompressed PubKey")
-address = base58.encode(addr)
-assert (address == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
+address = base58._encode(addr)
 print(address)
+assert (address == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
+assert (base58.encode_check(vh160) == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
 
 print("\n*** steps [5]-[9] are also known as Base58Check encode")
 

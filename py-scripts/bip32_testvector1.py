@@ -15,7 +15,7 @@ from btclib.curve import mult
 from btclib.curves import secp256k1 as ec
 from btclib.utils import octets_from_point
 from btclib.base58 import encode_check
-from btclib.wifaddress import _h160
+from btclib.utils import h160
 
 ## https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 
@@ -63,7 +63,7 @@ assert ext_pub == b"xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2g
 depth = b'\x01'
 child_n = 0 + 0x80000000 #hardened
 child_number = child_n.to_bytes(4, byteorder='big')
-fingerprint = _h160(Qbytes)[:4]
+fingerprint = h160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0]>127 else Qbytes
@@ -87,7 +87,7 @@ assert ext_pub == b"xpub68Gmy5EdvgibQVfPdqkBBCHxA5htiqg55crXYuXoQRKfDBFA1WEjWgP6
 depth = b'\x02'
 child_n = 1 + 0x00000000 #normal
 child_number = child_n.to_bytes(4, byteorder='big')
-fingerprint = _h160(Qbytes)[:4]
+fingerprint = h160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0]>127 else Qbytes
@@ -111,7 +111,7 @@ assert ext_pub == b"xpub6ASuArnXKPbfEwhqN6e3mwBcDTgzisQN1wXN9BJcM47sSikHjJf3UFHK
 depth = b'\x03'
 child_n = 2 + 0x80000000 #hardened
 child_number = child_n.to_bytes(4, byteorder='big')
-fingerprint = _h160(Qbytes)[:4]
+fingerprint = h160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0]>127 else Qbytes
@@ -135,7 +135,7 @@ assert ext_pub == b"xpub6D4BDPcP2GT577Vvch3R8wDkScZWzQzMMUm3PWbmWvVJrZwQY4VUNgqF
 depth = b'\x04'
 child_n = 2 + 0x00000000 #normal
 child_number = child_n.to_bytes(4, byteorder='big')
-fingerprint = _h160(Qbytes)[:4]
+fingerprint = h160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0]>127 else Qbytes
@@ -159,7 +159,7 @@ assert ext_pub == b"xpub6FHa3pjLCk84BayeJxFW2SP4XRrFd1JYnxeLeU8EqN3vDfZmbqBqaGJA
 depth = b'\x05'
 child_n = 1000000000 + 0x00000000 #normal
 child_number = child_n.to_bytes(4, byteorder='big')
-fingerprint = _h160(Qbytes)[:4]
+fingerprint = h160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0]>127 else Qbytes
