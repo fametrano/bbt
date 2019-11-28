@@ -1,6 +1,5 @@
 # Bitcoin and Blockchain Technology
 
-"Bitcoin and Blockchain Technology" course  
 University of Milano-Bicocca  
 Politecnico di Milano  
 University of Milan
