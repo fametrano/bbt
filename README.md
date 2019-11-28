@@ -1,6 +1,9 @@
 # Bitcoin and Blockchain Technology
 
-Material for the Bitcoin and Blockchain Technology course of Milano Bicocca and Politecnico di Milano.
+"Bitcoin and Blockchain Technology" course  
+University of Milano-Bicocca  
+Politecnico di Milano  
+University of Milan).
 
 - _py-scripts_ includes Python (3.6 or later) scripts; most of them require the [btclib](https://github.com/dginst/btclib) library;
 - _excel_: includes Excel spreadsheets with elliptic curve examples;
