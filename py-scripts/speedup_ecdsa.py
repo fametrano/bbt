@@ -12,10 +12,11 @@ import random
 import time
 from hashlib import sha256 as hf
 
-from btclib.curve import Curve, Point, mult, _double_mult, _mult_jac
+from btclib.curve import Curve, Point
+from btclib.curvemult import _double_mult, _mult_jac
 from btclib.curves import secp256k1 as ec
+from btclib.dsa import ECDS, _sign, mod_inv
 from btclib.rfc6979 import _rfc6979
-from btclib.dsa import _sign, ECDS, mod_inv
 
 
 def _verhlp(ec: Curve, e: int, P: Point, sig: ECDS, std: bool = True) -> bool:
@@ -33,26 +34,26 @@ def _verhlp(ec: Curve, e: int, P: Point, sig: ECDS, std: bool = True) -> bool:
         u1 = e*s1
         u2 = r*s1                                              # 4
         # Let R = u*G + v*P.
-        RJ = _double_mult(ec, u1, ec.GJ, u2, (P[0], P[1], 1))  # 5
+        RJ = _double_mult(u1, ec.GJ, u2, (P[0], P[1], 1))  # 5
 
         # Fail if infinite(R).
         assert RJ[2] != 0, "how did you do that?!?"            # 5
     else:
-        RJ = _double_mult(ec, e, ec.GJ, r, (P[0], P[1], 1))  # 5
+        RJ = _double_mult(e, ec.GJ, r, (P[0], P[1], 1))  # 5
 
         # Fail if infinite(R).
         assert RJ[2] != 0, "how did you do that?!?"            # 5
 
         try:
             K = r, ec.y(r), 1
-            sK = _mult_jac(ec, s, K)
+            sK = _mult_jac(s, K)
             if (sK[0]*RJ[2]*RJ[2] % ec._p) == (RJ[0]*sK[2]*sK[2] % ec._p):
                 return True
         except Exception:
             pass
 
         s1 = mod_inv(s, ec.n)
-        RJ = _mult_jac(ec, s1, RJ)
+        RJ = _mult_jac(s1, RJ)
 
     Rx = (RJ[0]*mod_inv(RJ[2]*RJ[2], ec._p)) % ec._p
     v = Rx % ec.n                                          # 6, 7
@@ -72,11 +73,11 @@ sigs = []
 for _ in range(5):
     q = random.getrandbits(ec.nlen) % ec.n
     qs.append(q)
-    Qs.append(mult(ec, q, ec.G))
+    Qs.append(ec.mult(q, ec.G))
     e = random.getrandbits(ec.nlen) % ec.n
     es.append(e)
-    k = _rfc6979(ec, hf, e, q)
-    sigs.append(_sign(ec, e, q, k))
+    k = _rfc6979(e, q)
+    sigs.append(_sign(e, q, k))
 
 start = time.time()
 for i in range(len(qs)):

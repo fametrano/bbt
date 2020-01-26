@@ -8,14 +8,13 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-from hmac import HMAC
 from hashlib import sha512
+from hmac import HMAC
 
-from btclib.curve import mult
+from btclib.base58 import encode
+from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
-from btclib.utils import octets_from_point
-from btclib.base58 import encode_check
-from btclib.utils import h160
+from btclib.utils import h160, octets_from_point
 
 ## https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 
@@ -45,15 +44,15 @@ hd = HMAC(b"Bitcoin seed", seed.to_bytes(seed_bytes, byteorder='big'), sha512).d
 qbytes = hd[:32]
 q = int(qbytes.hex(), 16) % ec.n
 qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
-Q = mult(ec, q, ec.G)
-Qbytes = octets_from_point(ec, Q, True)
+Q = mult(q, ec.G)
+Qbytes = octets_from_point(Q, True)
 chain_code = hd[32:]
 
 #extended keys
-ext_prv = encode_check(xprv + idf + chain_code + qbytes)
+ext_prv = encode(xprv + idf + chain_code + qbytes)
 print("\nm")
 print(ext_prv)
-ext_pub = encode_check(xpub + idf + chain_code + Qbytes)
+ext_pub = encode(xpub + idf + chain_code + Qbytes)
 print("M")
 print(ext_pub)
 assert ext_prv == b"xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi", "failure"
@@ -70,14 +69,14 @@ key = qbytes if child_number[0]>127 else Qbytes
 hd = HMAC(chain_code, key + child_number, sha512).digest()
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
-Q = mult(ec, q, ec.G)
-Qbytes = octets_from_point(ec, Q, True)
+Q = mult(q, ec.G)
+Qbytes = octets_from_point(Q, True)
 chain_code = hd[32:]
 
-ext_prv = encode_check(xprv + idf + chain_code + qbytes)
+ext_prv = encode(xprv + idf + chain_code + qbytes)
 print("\nm/0'")
 print(ext_prv)
-ext_pub = encode_check(xpub + idf + chain_code + Qbytes)
+ext_pub = encode(xpub + idf + chain_code + Qbytes)
 print("M/0'")
 print(ext_pub)
 assert ext_prv == b"xprv9uHRZZhk6KAJC1avXpDAp4MDc3sQKNxDiPvvkX8Br5ngLNv1TxvUxt4cV1rGL5hj6KCesnDYUhd7oWgT11eZG7XnxHrnYeSvkzY7d2bhkJ7", "failure"
@@ -94,14 +93,14 @@ key = qbytes if child_number[0]>127 else Qbytes
 hd = HMAC(chain_code, key + child_number, sha512).digest()
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
-Q = mult(ec, q, ec.G)
-Qbytes = octets_from_point(ec, Q, True)
+Q = mult(q, ec.G)
+Qbytes = octets_from_point(Q, True)
 chain_code = hd[32:]
 
-ext_prv = encode_check(xprv + idf + chain_code + qbytes)
+ext_prv = encode(xprv + idf + chain_code + qbytes)
 print("\nm/0'/1")
 print(ext_prv)
-ext_pub = encode_check(xpub + idf + chain_code + Qbytes)
+ext_pub = encode(xpub + idf + chain_code + Qbytes)
 print("M/0'/1")
 print(ext_pub)
 assert ext_prv == b"xprv9wTYmMFdV23N2TdNG573QoEsfRrWKQgWeibmLntzniatZvR9BmLnvSxqu53Kw1UmYPxLgboyZQaXwTCg8MSY3H2EU4pWcQDnRnrVA1xe8fs", "failure"
@@ -118,14 +117,14 @@ key = qbytes if child_number[0]>127 else Qbytes
 hd = HMAC(chain_code, key + child_number, sha512).digest()
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
-Q = mult(ec, q, ec.G)
-Qbytes = octets_from_point(ec, Q, True)
+Q = mult(q, ec.G)
+Qbytes = octets_from_point(Q, True)
 chain_code = hd[32:]
 
-ext_prv = encode_check(xprv + idf + chain_code + qbytes)
+ext_prv = encode(xprv + idf + chain_code + qbytes)
 print("\nm/0'/1/2'")
 print(ext_prv)
-ext_pub = encode_check(xpub + idf + chain_code + Qbytes)
+ext_pub = encode(xpub + idf + chain_code + Qbytes)
 print("M/0'/1/2'")
 print(ext_pub)
 assert ext_prv == b"xprv9z4pot5VBttmtdRTWfWQmoH1taj2axGVzFqSb8C9xaxKymcFzXBDptWmT7FwuEzG3ryjH4ktypQSAewRiNMjANTtpgP4mLTj34bhnZX7UiM", "failure"
@@ -142,14 +141,14 @@ key = qbytes if child_number[0]>127 else Qbytes
 hd = HMAC(chain_code, key + child_number, sha512).digest()
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
-Q = mult(ec, q, ec.G)
-Qbytes = octets_from_point(ec, Q, True)
+Q = mult(q, ec.G)
+Qbytes = octets_from_point(Q, True)
 chain_code = hd[32:]
 
-ext_prv = encode_check(xprv + idf + chain_code + qbytes)
+ext_prv = encode(xprv + idf + chain_code + qbytes)
 print("\nm/0'/1/2'/2")
 print(ext_prv)
-ext_pub = encode_check(xpub + idf + chain_code + Qbytes)
+ext_pub = encode(xpub + idf + chain_code + Qbytes)
 print("M/0'/1/2'/2")
 print(ext_pub)
 assert ext_prv == b"xprvA2JDeKCSNNZky6uBCviVfJSKyQ1mDYahRjijr5idH2WwLsEd4Hsb2Tyh8RfQMuPh7f7RtyzTtdrbdqqsunu5Mm3wDvUAKRHSC34sJ7in334", "failure"
@@ -166,14 +165,14 @@ key = qbytes if child_number[0]>127 else Qbytes
 hd = HMAC(chain_code, key + child_number, sha512).digest()
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
-Q = mult(ec, q, ec.G)
-Qbytes = octets_from_point(ec, Q, True)
+Q = mult(q, ec.G)
+Qbytes = octets_from_point(Q, True)
 chain_code = hd[32:]
 
-ext_prv = encode_check(xprv + idf + chain_code + qbytes)
+ext_prv = encode(xprv + idf + chain_code + qbytes)
 print("\nm/0'/1/2'/2/1000000000")
 print(ext_prv)
-ext_pub = encode_check(xpub + idf + chain_code + Qbytes)
+ext_pub = encode(xpub + idf + chain_code + Qbytes)
 print("M/0'/1/2'/2/1000000000")
 print(ext_pub)
 assert ext_prv == b"xprvA41z7zogVVwxVSgdKUHDy1SKmdb533PjDz7J6N6mV6uS3ze1ai8FHa8kmHScGpWmj4WggLyQjgPie1rFSruoUihUZREPSL39UNdE3BBDu76", "failure"

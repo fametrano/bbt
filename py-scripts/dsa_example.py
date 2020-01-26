@@ -10,10 +10,10 @@
 
 from hashlib import sha256 as hf
 
-from btclib.numbertheory import mod_inv
-from btclib.curve import mult
+from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
 from btclib.dsa import sign
+from btclib.numbertheory import mod_inv
 
 print("\n*** EC:")
 print(ec)
@@ -23,7 +23,7 @@ q = q % ec.n
 print("\n*** Key Generation:")
 print("prvkey:   ", hex(q))
 
-Q = mult(ec, q, ec.G)
+Q = mult(q, ec.G)
 print("PubKey:", "02" if (Q[1] % 2 == 0) else "03", hex(Q[0]))
 
 print("\n*** Message to be signed")
@@ -47,7 +47,7 @@ k = int.from_bytes(k_bytes, 'big') % ec.n
 assert 0 < k < ec.n, "Invalid ephemeral key"
 print("eph k:", hex(k))
 
-K = mult(ec, k, ec.G)
+K = mult(k, ec.G)
 
 r = K[0] % ec.n
 # if r == 0 (extremely unlikely for large ec.n) go back to a different k
@@ -66,8 +66,8 @@ u = (c*w) %ec.n
 v = (r*w) %ec.n
 assert u != 0
 assert v != 0
-U = mult(ec, u, ec.G)
-V = mult(ec, v, Q)
+U = mult(u, ec.G)
+V = mult(v, Q)
 x, y = ec.add(U, V)
 print(r == x %ec.n)
 
@@ -82,8 +82,8 @@ u = c*w %ec.n
 v = r*w %ec.n
 assert u != 0
 assert v != 0
-U = mult(ec, u, ec.G)
-V = mult(ec, v, Q)
+U = mult(u, ec.G)
+V = mult(v, Q)
 x, y = ec.add(U, V)
 print(r == x %ec.n)
 
@@ -103,7 +103,7 @@ print("\n*** Signature")
 k2 = k
 print("eph k2:", hex(k2))
 
-K2 = mult(ec, k2, ec.G)
+K2 = mult(k2, ec.G)
 
 r = K2[0] % ec.n
 # if r == 0 (extremely unlikely for large ec.n) go back to a different k
@@ -122,7 +122,7 @@ u = c2*w %ec.n
 v = r*w %ec.n
 assert u != 0
 assert v != 0
-U = mult(ec, u, ec.G)
-V = mult(ec, v, Q)
+U = mult(u, ec.G)
+V = mult(v, Q)
 x, y = ec.add(U, V)
 print(r == x % ec.n)

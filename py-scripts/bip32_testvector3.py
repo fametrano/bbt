@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 
-from hmac import HMAC
 from hashlib import sha512
+from hmac import HMAC
 
-from btclib.curve import mult
+from btclib.base58 import encode
+from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
-from btclib.utils import octets_from_point
-from btclib.base58 import encode_check
-from btclib.utils import h160
+from btclib.utils import h160, octets_from_point
 
 ## https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 
@@ -37,15 +36,15 @@ hd = HMAC(b"Bitcoin seed", seed.to_bytes(seed_bytes, 'big'), sha512).digest()
 qbytes = hd[:32]
 p = int(qbytes.hex(), 16) % ec.n
 qbytes = b'\x00' + p.to_bytes(32, 'big')
-Q = mult(ec, p, ec.G)
-Qbytes = octets_from_point(ec, Q, True)
+Q = mult(p, ec.G)
+Qbytes = octets_from_point(Q, True)
 chain_code = hd[32:]
 
 #extended keys
-ext_prv = encode_check(xprv + idf + chain_code + qbytes)
+ext_prv = encode(xprv + idf + chain_code + qbytes)
 print("\nm")
 print(ext_prv)
-ext_pub = encode_check(xpub + idf + chain_code + Qbytes)
+ext_pub = encode(xpub + idf + chain_code + Qbytes)
 print("M")
 print(ext_pub)
 assert ext_prv == b"xprv9s21ZrQH143K25QhxbucbDDuQ4naNntJRi4KUfWT7xo4EKsHt2QJDu7KXp1A3u7Bi1j8ph3EGsZ9Xvz9dGuVrtHHs7pXeTzjuxBrCmmhgC6", "failure"
@@ -62,16 +61,15 @@ key = qbytes if child_number[0]>127 else Qbytes
 hd = HMAC(chain_code, key + child_number, sha512).digest()
 p = (p + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b'\x00' + p.to_bytes(32, 'big')
-Q = mult(ec, p, ec.G)
+Q = mult(p, ec.G)
 Qbytes = (b'\x02' if (Q[1] % 2 == 0) else b'\x03') + Q[0].to_bytes(32, 'big')
 chain_code = hd[32:]
 
-ext_prv = encode_check(xprv + idf + chain_code + qbytes)
+ext_prv = encode(xprv + idf + chain_code + qbytes)
 print("\nm/0'")
 print(ext_prv)
-ext_pub = encode_check(xpub + idf + chain_code + Qbytes)
+ext_pub = encode(xpub + idf + chain_code + Qbytes)
 print("M/0'")
 print(ext_pub)
 assert ext_prv == b"xprv9uPDJpEQgRQfDcW7BkF7eTya6RPxXeJCqCJGHuCJ4GiRVLzkTXBAJMu2qaMWPrS7AANYqdq6vcBcBUdJCVVFceUvJFjaPdGZ2y9WACViL4L", "failure"
 assert ext_pub == b"xpub68NZiKmJWnxxS6aaHmn81bvJeTESw724CRDs6HbuccFQN9Ku14VQrADWgqbhhTHBaohPX4CjNLf9fq9MYo6oDaPPLPxSb7gwQN3ih19Zm4Y", "failure"
-

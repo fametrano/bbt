@@ -9,6 +9,7 @@
 # or distributed except according to the terms contained in the LICENSE file.
 
 from hashlib import sha256
+
 from btclib import base58
 
 # https://en.bitcoin.it/wiki/Wallet_import_format
@@ -41,7 +42,7 @@ print("\n*** [7] Base58 encoding")
 wif = base58._encode(checksummed_payload)
 print(wif)
 assert wif == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
-assert base58.encode_check(payload) == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
+assert base58.encode(payload) == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
 
 print("\n****** WIF to private key ******")
 
@@ -58,7 +59,7 @@ print("\n*** [3] Extended key (checksum verified)")
 payload, checksum = checksummed_payload[:-4], checksummed_payload[-4:]
 verified = ( sha256(sha256(payload).digest()).digest()[:4] == checksum )
 print(payload.hex() + " (" + ("true" if verified else "false") + ")")
-print(base58.decode_check(wif).hex())
+print(base58.decode(wif).hex())
 
 print("\n*** [4] Private key")
 p2 = payload[1:-1].hex() if compressed else payload[1:].hex()

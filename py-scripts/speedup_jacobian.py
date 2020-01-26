@@ -11,12 +11,11 @@
 import random
 import time
 
-from btclib.curve import _jac_from_aff, _mult_aff, _mult_jac
-from btclib.curves import secp256k1
+from btclib.curve import _jac_from_aff
+from btclib.curvemult import _mult_jac
+from btclib.curves import secp256k1 as ec
 
 random.seed(42)
-
-ec = secp256k1
 
 # setup
 qs = []
@@ -25,14 +24,14 @@ for _ in range(50):
 
 start = time.time()
 for q in qs:
-    _mult_aff(ec, q, ec.G)
+    ec._mult_aff(q, ec.G)
 elapsed1 = time.time() - start
 
 start = time.time()
 for q in qs:
     # starts from affine coordinates, ends with affine coordinates
     GJ = _jac_from_aff(ec.G)
-    ec._aff_from_jac(_mult_jac(ec, q, GJ))
+    ec._aff_from_jac(_mult_jac(q, GJ))
 elapsed2 = time.time() - start
 
 print(elapsed2 / elapsed1)

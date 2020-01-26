@@ -8,13 +8,12 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-""" Deterministic Wallet (Type-2)
-"""
+""" Deterministic Wallet (Type-2)"""
 
 import random
 from hashlib import sha256 as hf
 
-from btclib.curve import mult
+from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
 from btclib.utils import int_from_bits
 
@@ -23,7 +22,7 @@ mprvkey = random.getrandbits(ec.nlen) % ec.n
 print('\nmaster private key:', hex(mprvkey))
 
 # Master Pubkey:
-mpubkey = mult(ec, mprvkey, ec.G)
+mpubkey = mult(mprvkey, ec.G)
 print('Master Public Key:', hex(mpubkey[0]))
 print('                  ', hex(mpubkey[1]))
 
@@ -38,14 +37,14 @@ nKeys = 3
 for i in range(nKeys):
   ibytes = i.to_bytes(ec.nsize, 'big')
   hd = hf(ibytes + rbytes).digest()
-  hint.append(int_from_bits(ec, hd))
+  hint.append(int_from_bits(hd))
   q.append((mprvkey + hint[i]) % ec.n)
-  Q = mult(ec, q[i], ec.G)
+  Q = mult(q[i], ec.G)
   print('\nprvkey#', i, ':', hex(q[i]))
   print('Pubkey#',   i, ':', hex(Q[0]))
   print('           ',       hex(Q[1]))
 
 # Pubkeys could be calculated without using prvkeys
 for i in range(nKeys):
-  Q = ec.add(mpubkey, mult(ec, hint[i], ec.G))
-  assert Q == mult(ec, q[i], ec.G)
+  Q = ec.add(mpubkey, mult(hint[i], ec.G))
+  assert Q == mult(q[i], ec.G)

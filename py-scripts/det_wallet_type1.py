@@ -8,13 +8,12 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-""" Deterministic Wallet (Type-1)
-"""
+""" Deterministic Wallet (Type-1)"""
 
 import random
 from hashlib import sha256 as hf
 
-from btclib.curve import mult
+from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
 from btclib.utils import int_from_bits
 
@@ -27,8 +26,8 @@ nKeys = 3
 for i in range(nKeys):
   ibytes = i.to_bytes(ec.nlen, 'big')
   hd = hf(ibytes + mprvkey_bytes).digest()
-  q = int_from_bits(ec, hd)
-  Q = mult(ec, q, ec.G)
+  q = int_from_bits(hd)
+  Q = mult(q, ec.G)
   print('\nprvkey#', i, ':', hex(q))
   print('Pubkey#',   i, ':', hex(Q[0]))
   print('           ',       hex(Q[1]))

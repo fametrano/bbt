@@ -10,7 +10,7 @@
 
 from hashlib import sha256 as hf
 
-from btclib.curve import mult
+from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
 
 print("\n*** EC:")
@@ -21,7 +21,7 @@ q = q % ec.n
 print("\n*** Keys:")
 print("prvkey:   ", hex(q))
 
-Q = mult(ec, q, ec.G)
+Q = mult(q, ec.G)
 print("PubKey:", "02" if (Q[1] % 2 == 0) else "03", hex(Q[0]))
 
 print("\n*** Message to be signed")
@@ -44,7 +44,7 @@ k_bytes = hf(temp).digest()
 k1 = int.from_bytes(k_bytes, 'big') % ec.n
 assert k1 != 0
 
-K1 = mult(ec, k1, ec.G)
+K1 = mult(k1, ec.G)
 
 s1 = (k1-h1*q) % ec.n
 # if s1 == 0 (extremely unlikely for large ec.n) go back to a different ephemeral key
@@ -55,9 +55,9 @@ print("    s1:", hex(s1))
 
 print("*** Signature Verification")
 minush1 = -h1 %ec.n
-V = mult(ec, minush1, Q)
+V = mult(minush1, Q)
 V = ec.add(K1, V)
-print(V == mult(ec, s1, ec.G))
+print(V == mult(s1, ec.G))
 
 print("\n*** Another message")
 msg2 = "and Paolo is right to be afraid"
@@ -73,7 +73,7 @@ print("    h2:", hex(h2))
 print("\n*** Signature")
 k2 = k1 #very bad! Never reuse the same ephemeral key!!!
 
-K2 = mult(ec, k2, ec.G)
+K2 = mult(k2, ec.G)
 
 s2 = (k2-h2*q) %ec.n
 # if s2 == 0 (extremely unlikely) go back to a different ephemeral key
@@ -84,6 +84,6 @@ print("    s2:", hex(s2))
 
 print("*** Signature Verification")
 minush2 = -h2 %ec.n
-V = mult(ec, minush2, Q)
+V = mult(minush2, Q)
 V = ec.add(K2, V)
-print(V == mult(ec, s2, ec.G))
+print(V == mult(s2, ec.G))

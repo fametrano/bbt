@@ -10,9 +10,8 @@
 
 import hashlib
 
-from btclib.curve import mult
-from btclib.curves import secp256k1 as ec
 from btclib import base58
+from btclib.curvemult import mult
 
 # https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses
 prvkey = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
@@ -20,7 +19,7 @@ prvkey = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
 print("\n*** [0] Private ECDSA Key:")
 print(hex(prvkey))
 
-PubKey = mult(ec, prvkey, ec.G)
+PubKey = mult(prvkey)
 PubKey_bytes = b'\x04' + \
                PubKey[0].to_bytes(32, byteorder='big') + \
                PubKey[1].to_bytes(32, byteorder='big')
@@ -59,13 +58,13 @@ print("\n*** [9] Base58 encoded address from uncompressed PubKey")
 address = base58._encode(addr)
 print(address)
 assert (address == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
-assert (base58.encode_check(vh160) == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
+assert (base58.encode(vh160) == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
 
 print("\n*** steps [5]-[9] are also known as Base58Check encode")
 
 
 def pubkey_bytes_from_prvkey(prvkey, compressed = True):
-    PubKey = mult(ec, prvkey, ec.G)
+    PubKey = mult(prvkey)
     if compressed:
         prefix = b'\x02' if (PubKey[1] % 2 == 0) else b'\x03'
         return prefix + PubKey[0].to_bytes(32, byteorder='big')
@@ -85,7 +84,7 @@ def hash160(inp):
 
 def address_from_pubkey_bytes(inp, version=b'\x00'):
     vh160 = version + hash160(inp)
-    return base58.encode_check(vh160)
+    return base58.encode(vh160)
 
 print("\n*** [9] base58 encoded address from compressed PubKey_bytes")
 address = address_from_pubkey_bytes(PubKey_bytes)
@@ -93,7 +92,7 @@ assert (address == b'1PMycacnJaSqwwJqjawXBErnLsZ7RkXUAs')
 print(address)
 
 def hash_160_from_address(addr):
-    return base58.decode_check(addr)[1:21]
+    return base58.decode(addr)[1:21]
 
 print("\n*** h160 from address")
 print(hash_160_from_address(address).hex())

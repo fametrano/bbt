@@ -10,6 +10,7 @@
 
 import hashlib
 import time
+from typing import List
 
 msg = input('insert string (return for "Hello, world!"): ')
 if msg == "": msg = "Hello, world!"
@@ -25,7 +26,7 @@ print(f"\nstring is: {msg}")
 print(f"{zeros} required zeros")
 
 # n[i] is used to count the results starting with i+1 zeros
-n = []
+n: List[int] = []
 maxEval = pow(16, zeros+1)
 i = j = nonce = 0
 start = time.time()
