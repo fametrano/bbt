@@ -64,18 +64,15 @@ else:
 # Now plot the result in a bar chart
 import matplotlib.pyplot as plt
 
-x = []
-i=1
-for i in range(zeros):
-    x.append(i+1)
-
+x = range(1, zeros+1)
 plt.bar(x, n)
-plt.xlabel('Number of zeros')
-plt.ylabel('Number of results')
+plt.xlabel('Leading zeros')
+plt.ylabel('Occurrences')
 plt.show()
 
 # It is better to use a logarithmic scale for Y axis
-plt.bar(x, n, log='true')
-plt.xlabel('Number of zeros')
-plt.ylabel('Number of results')
+plt.bar(x, n)
+plt.xlabel('Leading zeros')
+plt.ylabel('Occurrences')
+plt.yscale('log', basey=16)
 plt.show()
