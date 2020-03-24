@@ -5,6 +5,7 @@ Politecnico di Milano
 University of Milano
 
 Material:
+
 - the _ipynb_ folder includes Jupyter notebooks
 - the _py-scripts_ folder includes Python (3.6 or later) scripts: most of them require the [btclib](https://github.com/dginst/btclib) library;
 - the _excel_ folder includes Excel spreadsheets illustrating finite fields and elliptic curves;
