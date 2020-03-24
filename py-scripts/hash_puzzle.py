@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2017-2019 The btclib developers
+# Copyright (C) 2017-2020 The btclib developers
 #
 # This file is part of btclib. It is subject to the license terms in the
 # LICENSE file found in the top-level directory of this distribution.
@@ -59,3 +59,23 @@ if n[zeros-1] == 1:
     print(hashValue)
 else:
     print("nonce not found")
+
+
+# Now plot the result in a bar chart
+import matplotlib.pyplot as plt
+
+x = []
+i=1
+for i in range(zeros):
+    x.append(i+1)
+
+plt.bar(x, n)
+plt.xlabel('Number of zeros')
+plt.ylabel('Number of results')
+plt.show()
+
+# It is better to use a logarithmic scale for Y axis
+plt.bar(x, n, log='true')
+plt.xlabel('Number of zeros')
+plt.ylabel('Number of results')
+plt.show()
