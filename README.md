@@ -8,7 +8,7 @@ The latest version of the course slides is available from the course page at <ht
 
 Other material available in this repo:
 
-- the _calc_ folder includes Calc spreadsheets illustrating finite fields and elliptic curves
+- the _calc_ folder includes LibreOffice Calc spreadsheets illustrating finite fields and elliptic curves
 - the _excel_ folder includes Excel spreadsheets illustrating finite fields and elliptic curves
 - the _ipynb_ folder includes Jupyter notebooks
 - the _py-scripts_ folder includes Python (3.8 or later) scripts: most of them require the [btclib](https://github.com/dginst/btclib) library
