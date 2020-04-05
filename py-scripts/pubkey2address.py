@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2017-2019 The btclib developers
+# Copyright (C) 2017-2020 The btclib developers
 #
 # This file is part of btclib. It is subject to the license terms in the
 # LICENSE file found in the top-level directory of this distribution.
@@ -55,12 +55,12 @@ addr = vh160 + h4[:4]
 print(addr.hex())
 
 print("\n*** [9] Base58 encoded address from uncompressed PubKey")
-address = base58._encode(addr)
+address = base58._b58encode(addr)
 print(address)
 assert (address == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
-assert (base58.encode(vh160) == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
+assert (base58.b58encode(vh160) == b'16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM')
 
-print("\n*** steps [5]-[9] are also known as Base58Check encode")
+print("\n*** steps [5]-[9] are also known as Base58Check b58encode")
 
 
 def pubkey_bytes_from_prvkey(prvkey, compressed = True):
@@ -84,7 +84,7 @@ def hash160(inp):
 
 def address_from_pubkey_bytes(inp, version=b'\x00'):
     vh160 = version + hash160(inp)
-    return base58.encode(vh160)
+    return base58.b58encode(vh160)
 
 print("\n*** [9] base58 encoded address from compressed PubKey_bytes")
 address = address_from_pubkey_bytes(PubKey_bytes)
@@ -92,7 +92,7 @@ assert (address == b'1PMycacnJaSqwwJqjawXBErnLsZ7RkXUAs')
 print(address)
 
 def hash_160_from_address(addr):
-    return base58.decode(addr)[1:21]
+    return base58.b58decode(addr)[1:21]
 
-print("\n*** h160 from address")
+print("\n*** hash160 from address")
 print(hash_160_from_address(address).hex())

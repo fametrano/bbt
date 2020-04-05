@@ -3,10 +3,11 @@
 from hashlib import sha512
 from hmac import HMAC
 
-from btclib.base58 import encode
+from btclib.base58 import b58encode
 from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
-from btclib.utils import h160, octets_from_point
+from btclib.secpoint import bytes_from_point
+from btclib.utils import hash160
 
 ## https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 
@@ -37,14 +38,14 @@ qbytes = hd[:32]
 p = int(qbytes.hex(), 16) % ec.n
 qbytes = b'\x00' + p.to_bytes(32, 'big')
 Q = mult(p, ec.G)
-Qbytes = octets_from_point(Q, True)
+Qbytes = bytes_from_point(Q, True)
 chain_code = hd[32:]
 
 #extended keys
-ext_prv = encode(xprv + idf + chain_code + qbytes)
+ext_prv = b58encode(xprv + idf + chain_code + qbytes)
 print("\nm")
 print(ext_prv)
-ext_pub = encode(xpub + idf + chain_code + Qbytes)
+ext_pub = b58encode(xpub + idf + chain_code + Qbytes)
 print("M")
 print(ext_pub)
 assert ext_prv == b"xprv9s21ZrQH143K25QhxbucbDDuQ4naNntJRi4KUfWT7xo4EKsHt2QJDu7KXp1A3u7Bi1j8ph3EGsZ9Xvz9dGuVrtHHs7pXeTzjuxBrCmmhgC6", "failure"
@@ -54,7 +55,7 @@ assert ext_pub == b"xpub661MyMwAqRbcEZVB4dScxMAdx6d4nFc9nvyvH3v4gJL378CSRZiYmhRo
 depth = b'\x01'
 child_n = 0 + 0x80000000 #hardened
 child_number = child_n.to_bytes(4, 'big')
-fingerprint = h160(Qbytes)[:4]
+fingerprint = hash160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0]>127 else Qbytes
@@ -65,10 +66,10 @@ Q = mult(p, ec.G)
 Qbytes = (b'\x02' if (Q[1] % 2 == 0) else b'\x03') + Q[0].to_bytes(32, 'big')
 chain_code = hd[32:]
 
-ext_prv = encode(xprv + idf + chain_code + qbytes)
+ext_prv = b58encode(xprv + idf + chain_code + qbytes)
 print("\nm/0'")
 print(ext_prv)
-ext_pub = encode(xpub + idf + chain_code + Qbytes)
+ext_pub = b58encode(xpub + idf + chain_code + Qbytes)
 print("M/0'")
 print(ext_pub)
 assert ext_prv == b"xprv9uPDJpEQgRQfDcW7BkF7eTya6RPxXeJCqCJGHuCJ4GiRVLzkTXBAJMu2qaMWPrS7AANYqdq6vcBcBUdJCVVFceUvJFjaPdGZ2y9WACViL4L", "failure"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2017-2019 The btclib developers
+# Copyright (C) 2017-2020 The btclib developers
 #
 # This file is part of btclib. It is subject to the license terms in the
 # LICENSE file found in the top-level directory of this distribution.
@@ -39,10 +39,10 @@ checksummed_payload = payload + h2[:4]
 print(checksummed_payload.hex())
 
 print("\n*** [7] Base58 encoding")
-wif = base58._encode(checksummed_payload)
+wif = base58._b58encode(checksummed_payload)
 print(wif)
 assert wif == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
-assert base58.encode(payload) == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
+assert base58.b58encode(payload) == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
 
 print("\n****** WIF to private key ******")
 
@@ -52,14 +52,14 @@ compressed = len(wif)-51
 print ("compressed" if (compressed==1) else "uncompressed")
 
 print("\n*** [2] Base58 decoding")
-checksummed_payload = base58._decode(wif)
+checksummed_payload = base58._b58decode(wif, None)
 print(checksummed_payload.hex())
 
 print("\n*** [3] Extended key (checksum verified)")
 payload, checksum = checksummed_payload[:-4], checksummed_payload[-4:]
 verified = ( sha256(sha256(payload).digest()).digest()[:4] == checksum )
 print(payload.hex() + " (" + ("true" if verified else "false") + ")")
-print(base58.decode(wif).hex())
+print(base58.b58decode(wif).hex())
 
 print("\n*** [4] Private key")
 p2 = payload[1:-1].hex() if compressed else payload[1:].hex()

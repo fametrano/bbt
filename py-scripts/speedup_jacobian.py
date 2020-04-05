@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2017-2019 The btclib developers
+# Copyright (C) 2017-2020 The btclib developers
 #
 # This file is part of btclib. It is subject to the license terms in the
 # LICENSE file found in the top-level directory of this distribution.
@@ -31,7 +31,7 @@ start = time.time()
 for q in qs:
     # starts from affine coordinates, ends with affine coordinates
     GJ = _jac_from_aff(ec.G)
-    ec._aff_from_jac(_mult_jac(q, GJ))
+    ec._aff_from_jac(_mult_jac(q, GJ, ec))
 elapsed2 = time.time() - start
 
 print(elapsed2 / elapsed1)
