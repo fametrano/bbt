@@ -27,7 +27,7 @@ q = q % ec.n
 Q = mult(q, ec.G)
 if not ec.has_square_y(Q):
     q = ec.n - q
-    Q = (Q[0], ec._p - Q[1])
+    Q = (Q[0], ec.p - Q[1])
 print(f"prvkey: {hex(q).upper()}")
 print(f"PubKey: {hex(Q[0]).upper()}")
 

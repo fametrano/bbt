@@ -13,7 +13,7 @@ import time
 from hashlib import sha256 as hf
 
 from btclib.curve import Curve, Point
-from btclib.curvemult import _double_mult, _mult_jac
+from btclib.curvemult import _double_mult, _mult_jac, mult
 from btclib.curves import secp256k1 as ec
 from btclib.dsa import DSASig, _sign, mod_inv
 from btclib.rfc6979 import _rfc6979
@@ -29,7 +29,7 @@ def _verhlp(ec: Curve, e: int, P: Point, sig: DSASig, std: bool = True) -> bool:
     if P[1] == 0:
         raise ValueError("public key is infinite")
 
-    if std or r < ec._p - ec.n:
+    if std or r < ec.p - ec.n:
         s1 = mod_inv(s, ec.n)
         u1 = e*s1
         u2 = r*s1                                              # 4
@@ -55,7 +55,7 @@ def _verhlp(ec: Curve, e: int, P: Point, sig: DSASig, std: bool = True) -> bool:
         s1 = mod_inv(s, ec.n)
         RJ = _mult_jac(s1, RJ, ec)
 
-    Rx = (RJ[0]*mod_inv(RJ[2]*RJ[2], ec._p)) % ec._p
+    Rx = (RJ[0]*mod_inv(RJ[2]*RJ[2], ec.p)) % ec.p
     v = Rx % ec.n                                              # 6, 7
     # Fail if r ≠ x(R) %n.
     return r == v                                              # 8
@@ -73,7 +73,7 @@ sigs = []
 for _ in range(5):
     q = random.getrandbits(ec.nlen) % ec.n
     qs.append(q)
-    Qs.append(ec.mult(q, ec.G))
+    Qs.append(mult(q, ec.G, ec))
     e = random.getrandbits(ec.nlen) % ec.n
     es.append(e)
     k = _rfc6979(e, q, ec, hf)
