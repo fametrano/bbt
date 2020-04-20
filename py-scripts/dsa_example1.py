@@ -10,8 +10,7 @@
 
 from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
-from btclib.dsa import recover_pubkeys, sign, verify
-from btclib.der import serialize, deserialize
+from btclib.dsa import recover_pubkeys, sign, verify, serialize, deserialize
 
 print("\n*** EC:")
 print(ec)
@@ -84,6 +83,6 @@ print("\n** Serialize signature")
 dersig = serialize(r2, s2, None)
 print("     bytes:", dersig)
 print("hex-string:", dersig.hex().upper())
-r3, s3, _ = deserialize(dersig)
+r3, s3 = deserialize(dersig)
 if r2==r3 and s2==s3:
     print("Succesfully deserialized!")
