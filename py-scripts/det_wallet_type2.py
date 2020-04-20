@@ -38,7 +38,7 @@ for i in range(nKeys):
   ibytes = i.to_bytes(ec.nsize, 'big')
   hd = hf(ibytes + rbytes).digest()
   offset = int_from_bits(hd, ec.nlen) % ec.n
-  q = (mprvkey + offset) % ec.n)
+  q = (mprvkey + offset) % ec.n
   Q = mult(q, ec.G)
   print(f'\nprvkey# {i}: {hex(q).upper()}')
   print(f'Pubkey# {i}: {hex(Q[0]).upper()}')
@@ -49,5 +49,5 @@ for i in range(nKeys):
   ibytes = i.to_bytes(ec.nsize, 'big')
   hd = hf(ibytes + rbytes).digest()
   offset = int_from_bits(hd, ec.nlen) % ec.n
-  Q = ec.add(mpubkey, mult(offset, ec.G))
-  assert Q == mult(q[i], ec.G)
+  Q = ec.add(mpubkey, mult(offset))
+  assert Q == mult((mprvkey + offset) % ec.n)
