@@ -64,15 +64,14 @@ print(f"    s1:    {hex(s1).upper()}")
 
 print("3. Verify signature")
 w = mod_inv(s1, ec.n)
-u = (c1*w) %ec.n
-v = (r1*w) %ec.n
+u = (c1*w) % ec.n
+v = (r1*w) % ec.n
 assert u != 0
 assert v != 0
 U = mult(u, ec.G)
 V = mult(v, Q)
 x, y = ec.add(U, V)
-print(r1 == x %ec.n)
-
+print(r1 == x % ec.n)
 
 
 print("\n** Malleated signature")
@@ -83,14 +82,14 @@ print(f"    sm:    {hex(sm).upper()}")
 
 print("** Verify malleated signature")
 w = mod_inv(sm, ec.n)
-u = c1*w %ec.n
-v = r1*w %ec.n
+u = c1*w % ec.n
+v = r1*w % ec.n
 assert u != 0
 assert v != 0
 U = mult(u, ec.G)
 V = mult(v, Q)
 x, y = ec.add(U, V)
-print(r1 == x %ec.n)
+print(r1 == x % ec.n)
 
 
 print("\n0. Another message to sign")
@@ -106,7 +105,7 @@ c2 = int_from_bits(msghd2, ec.nlen) % ec.n
 assert c2 != 0
 print(f"    c2:    {hex(c2).upper()}")
 
-#very bad! Never reuse an ephemeral key!!!
+# very bad! Never reuse an ephemeral key!!!
 k2 = k1
 print(f"eph k2:    {hex(k2).upper()}")
 
@@ -114,7 +113,7 @@ K2 = mult(k2, ec.G)
 r2 = K2[0] % ec.n
 # if r2 == 0 (extremely unlikely for large ec.n) go back to a different k
 assert r2 != 0
-s2 = (c2 + r2*q) * mod_inv(k2, ec.n) %ec.n
+s2 = (c2 + r2*q) * mod_inv(k2, ec.n) % ec.n
 # if s2 == 0 (extremely unlikely for large ec.n) go back to a different k
 assert s2 != 0
 print(f"    r2:    {hex(r2).upper()}")
@@ -123,12 +122,11 @@ print(f"    s2:    {hex(s2).upper()}")
 
 print("3. Verify signature")
 w = mod_inv(s2, ec.n)
-u = c2*w %ec.n
-v = r2*w %ec.n
+u = c2*w % ec.n
+v = r2*w % ec.n
 assert u != 0
 assert v != 0
 U = mult(u, ec.G)
 V = mult(v, Q)
 x, y = ec.add(U, V)
 print(r2 == x % ec.n)
-

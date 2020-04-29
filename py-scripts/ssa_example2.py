@@ -12,7 +12,6 @@ from hashlib import sha256
 
 from btclib.curvemult import mult, double_mult
 from btclib.curves import secp256k1 as ec
-from btclib.numbertheory import mod_inv
 from btclib.utils import int_from_bits
 from btclib.ssa import _challenge
 

@@ -27,11 +27,11 @@ address1 = p2pkh(pubkey)
 print("      p2pkh:", address1.decode())
 address2 = p2wpkh_p2sh(pubkey)
 print("p2wpkh_p2sh:", address2.decode())
-address3 = p2wpkh(pubkey) 
+address3 = p2wpkh(pubkey)
 print("     p2wpkh:", address3.decode())
 
 
-print("\n3. Sign message with no specific address (or with compressed p2pkh address):")
+print("\n3. Sign message with no address (or with compressed p2pkh address):")
 sig1 = sign(msg, wif)
 print(f"rf1: {sig1[0]}")
 print(f" r1: {hex(sig1[1]).upper()}")
@@ -80,8 +80,8 @@ print("BIP137 p2wpkh     :", verify(msg, address3, sig3))
 
 
 # uncompressed WIF / P2PKH address
-q, _, network = prvkey_info_from_prvkey(wif)
-wif2 = wif_from_prvkey(q, False, network)
+q, network, _ = prvkey_info_from_prvkey(wif)
+wif2 = wif_from_prvkey(q, network, compressed=False)
 print("\n1. Uncompressed WIF          :", wif2.decode())
 pubkey, network = pubkey_info_from_prvkey(wif2)
 

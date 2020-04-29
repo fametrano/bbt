@@ -40,7 +40,8 @@ print(verify(msg1, Q, (r1, s1)))
 print("4. Recover keys")
 keys = recover_pubkeys(msg1, (r1, s1))
 for i, key in enumerate(keys):
-    print(f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
+    print(
+        f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
 
 
 print("\n** Malleated signature")
@@ -56,7 +57,8 @@ print(verify(msg1, Q, (r1, sm)))
 print("** Recover keys")
 keys = recover_pubkeys(msg1, (r1, sm))
 for i, key in enumerate(keys):
-    print(f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
+    print(
+        f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
 
 
 print("\n0. Another message to sign")
@@ -77,12 +79,13 @@ print(verify(msg2, Q, (r2, s2)))
 print("4. Recover keys")
 keys = recover_pubkeys(msg2, (r2, s2))
 for i, key in enumerate(keys):
-    print(f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
+    print(
+        f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
 
 print("\n** Serialize signature")
-dersig = serialize(r2, s2, None)
+dersig = serialize(r2, s2)
 print("     bytes:", dersig)
 print("hex-string:", dersig.hex().upper())
 r3, s3 = deserialize(dersig)
-if r2==r3 and s2==s3:
+if r2 == r3 and s2 == s3:
     print("Succesfully deserialized!")

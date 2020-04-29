@@ -19,7 +19,8 @@ from btclib.dsa import DSASig, _sign, mod_inv
 from btclib.rfc6979 import _rfc6979
 
 
-def _verhlp(ec: Curve, e: int, P: Point, sig: DSASig, std: bool = True) -> bool:
+def _verhlp(ec: Curve, e: int, P: Point,
+            sig: DSASig, std: bool = True) -> bool:
     # Private function for test/dev purposes
 
     r, s = sig
@@ -59,8 +60,6 @@ def _verhlp(ec: Curve, e: int, P: Point, sig: DSASig, std: bool = True) -> bool:
     v = Rx % ec.n                                              # 6, 7
     # Fail if r ≠ x(R) %n.
     return r == v                                              # 8
-
-
 
 
 random.seed(42)

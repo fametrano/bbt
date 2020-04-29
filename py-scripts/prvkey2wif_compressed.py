@@ -41,15 +41,16 @@ print(checksummed_payload.hex())
 print("\n*** [7] Base58 encoding")
 wif = base58._b58encode(checksummed_payload)
 print(wif)
-assert wif == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
-assert base58.b58encode(payload) == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617', "failure"
+assert wif == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617'
+wif = base58.b58encode(payload)
+assert wif == b'KwdMAjGmerYanjeui5SHS7JkmpZvVipYvB2LJGU1ZxJwYvP98617'
 
 print("\n****** WIF to private key ******")
 
 print("\n*** [1] Base58 WIF")
 print(wif)
 compressed = len(wif)-51
-print ("compressed" if (compressed==1) else "uncompressed")
+print("compressed" if (compressed == 1) else "uncompressed")
 
 print("\n*** [2] Base58 decoding")
 checksummed_payload = base58._b58decode(wif, None)
@@ -57,7 +58,7 @@ print(checksummed_payload.hex())
 
 print("\n*** [3] Extended key (checksum verified)")
 payload, checksum = checksummed_payload[:-4], checksummed_payload[-4:]
-verified = ( sha256(sha256(payload).digest()).digest()[:4] == checksum )
+verified = (sha256(sha256(payload).digest()).digest()[:4] == checksum)
 print(payload.hex() + " (" + ("true" if verified else "false") + ")")
 print(base58.b58decode(wif).hex())
 

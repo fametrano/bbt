@@ -1,7 +1,7 @@
 from btclib.curve import Curve
 
 # low cardinality curves p<100
-ec11_7  = Curve(11, 2, 7, (6,   9),   7, 2, 0, False)
+ec11_7 = Curve(11, 2, 7, (6,   9),   7, 2, 0, False)
 ec11_17 = Curve(11, 2, 4, (0,   9),  17, 1, 0, False)
 ec13_11 = Curve(13, 7, 6, (1,   1),  11, 1, 0, False)
 ec13_19 = Curve(13, 0, 2, (1,   9),  19, 1, 0, False)
