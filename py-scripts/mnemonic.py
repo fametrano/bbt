@@ -21,7 +21,7 @@ rxprv = bip32.xprv_from_bip39_mnemonic(bip39_mnemonic)
 rxpub = bip32.xpub_from_xprv(rxprv)
 # warning: first level should always be hardened
 # or any (depth=1) child private key would compromise rxprv
-path = "./0"
+path = "m/0"
 xprv = bip32.derive(rxprv, path)
 print(path + f" : {xprv}")
 
@@ -31,7 +31,7 @@ print(electrum_mnemonic)
 mxprv = bip32.xprv_from_electrum_mnemonic(electrum_mnemonic)
 mxpub = bip32.xpub_from_xprv(mxprv)
 # warning: first level should always be hardened
-# or any (depth=1) child private key would compromise rxprv
-path = "./0"
+# or any (depth=1) child private key would compromise mxprv
+path = "m/0"
 xprv = bip32.derive(mxprv, path)
 print(path + f" : {xprv}")
