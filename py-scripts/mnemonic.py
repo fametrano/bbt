@@ -10,7 +10,7 @@
 
 import secrets
 
-from btclib import bip39, bip32, electrum
+from btclib import bip32, bip39, electrum
 
 entropy = secrets.randbits(256)
 
