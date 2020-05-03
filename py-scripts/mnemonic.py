@@ -17,7 +17,7 @@ entropy = secrets.randbits(256)
 bip39_mnemonic = bip39.mnemonic_from_entropy(entropy)
 print()
 print(bip39_mnemonic)
-rxprv = bip32.xprv_from_bip39_mnemonic(bip39_mnemonic)
+rxprv = bip32.mxprv_from_bip39_mnemonic(bip39_mnemonic)
 rxpub = bip32.xpub_from_xprv(rxprv)
 # warning: first level should always be hardened
 # or any (depth=1) child private key would compromise rxprv
@@ -28,7 +28,7 @@ print(path + f" : {xprv}")
 electrum_mnemonic = electrum.mnemonic_from_entropy(entropy)
 print()
 print(electrum_mnemonic)
-mxprv = bip32.xprv_from_electrum_mnemonic(electrum_mnemonic)
+mxprv = bip32.mxprv_from_electrum_mnemonic(electrum_mnemonic)
 mxpub = bip32.xpub_from_xprv(mxprv)
 # warning: first level should always be hardened
 # or any (depth=1) child private key would compromise mxprv
