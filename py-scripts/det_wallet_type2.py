@@ -26,10 +26,8 @@ mpubkey = mult(mprvkey, ec.G)
 print(f'Master Pubkey: {hex(mpubkey[0]).upper()}')
 print(f'               {hex(mpubkey[1]).upper()}')
 
-# public random number
-for i in range(256):
-    r = secrets.randbits(ec.nlen)
-    print(f'\npublic random number: {hex(r).upper()}')
+r = secrets.randbits(ec.nlen)
+print(f'\npublic random number: {hex(r).upper()}')
 
 rbytes = r.to_bytes(ec.nsize, 'big')
 nKeys = 3
