@@ -8,7 +8,7 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-""" Deterministic Wallet (Type-1)"""
+""" Deterministic Key Sequence (Type-1)"""
 
 import secrets
 from hashlib import sha256 as hf
