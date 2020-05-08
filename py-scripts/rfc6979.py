@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+
+# Copyright (C) 2017-2020 The btclib developers
+#
+# This file is part of btclib. It is subject to the license terms in the
+# LICENSE file found in the top-level directory of this distribution.
+#
+# No part of btclib including this file, may be copied, modified, propagated,
+# or distributed except according to the terms contained in the LICENSE file.
 
 import json
 from os import path
@@ -404,10 +413,9 @@ tvs.append([hex(x), hex(Ux), hex(Uy), hf, msg, hex(k), hex(r), hex(s)])
 
 mydict[key] = tvs
 
-datadir = path.join(path.dirname(__file__), "..", "..",
-                    "btclib", "btclib", "tests", "data")
+datadir = path.join(path.dirname(__file__),
+                    "..", "..", "btclib", "btclib", "tests", "test_data")
 filename = path.join(datadir, 'rfc6979.json')
-
 with open(filename, 'w') as json_file:
     json.dump(mydict, json_file, sort_keys=True, indent=4)
 
