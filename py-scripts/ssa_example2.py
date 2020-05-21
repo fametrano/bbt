@@ -12,7 +12,6 @@ from hashlib import sha256
 
 from btclib.curvemult import mult, double_mult
 from btclib.curves import secp256k1 as ec
-from btclib.numbertheory import mod_inv
 from btclib.utils import int_from_bits
 from btclib.ssa import _challenge
 
@@ -42,9 +41,9 @@ print("\n*** Ephemeral key and challenge")
 # ephemeral key k must be kept secret and never reused !!!!!
 # good choice: k = hf(q||msg)
 # different for each msg, private because of q
-temp = q.to_bytes(32, 'big') + msg1
+temp = q.to_bytes(32, "big") + msg1
 k1_bytes = sha256(temp).digest()
-k1 = int.from_bytes(k1_bytes, 'big') % ec.n
+k1 = int.from_bytes(k1_bytes, "big") % ec.n
 k1 = int_from_bits(k1_bytes, ec.nlen) % ec.n
 assert 0 < k1 < ec.n, "Invalid ephemeral key"
 print(f"eph k: {hex(k1).upper()}")
@@ -56,7 +55,7 @@ print(f"   c1: {hex(c1).upper()}")
 
 print("2. Sign message")
 r1 = K1[0]
-s1 = (k1 + c1*q) % ec.n
+s1 = (k1 + c1 * q) % ec.n
 print(f"   r1: {hex(r1).upper()}")
 print(f"   s1: {hex(s1).upper()}")
 
@@ -84,7 +83,7 @@ print(f"   c2: {hex(c2).upper()}")
 
 print("2. Sign message")
 r2 = K2[0]
-s2 = (k2 + c2*q) % ec.n
+s2 = (k2 + c2 * q) % ec.n
 print(f"   r2: {hex(r2).upper()}")
 print(f"   s2: {hex(s2).upper()}")
 

@@ -13,9 +13,10 @@ import time
 from typing import List
 
 msg = input('insert string (return for "Hello, world!"): ')
-if msg == "": msg = "Hello, world!"
+if msg == "":
+    msg = "Hello, world!"
 
-zerostr = input('number of required zeros (return for 4 zeros): ')
+zerostr = input("number of required zeros (return for 4 zeros): ")
 if zerostr == "":
     zeros = 4
 else:
@@ -27,11 +28,11 @@ print(f"{zeros} required zeros")
 
 # n[i] is used to count the results starting with i+1 zeros
 n: List[int] = []
-maxEval = pow(16, zeros+1)
+maxEval = pow(16, zeros + 1)
 i = j = nonce = 0
 start = time.time()
 while i < maxEval and nonce == 0:
-    string = msg+str(i)
+    string = msg + str(i)
     hashValue = hashlib.sha256(string.encode()).hexdigest()
     while hashValue[j] == "0":
         if j < len(n):
@@ -41,19 +42,20 @@ while i < maxEval and nonce == 0:
             elapsed = time.time() - start
             report = f"{j+1} zeros found {n}"
             if 0 < elapsed <= 600:
-                report += f" in {round(elapsed)} seconds at {round(i/elapsed)} hash/s"
+                report += f" in {round(elapsed)} seconds "
             elif 600 < elapsed <= 36000:
-                report += f" in {round(elapsed/60)} minutes at {round(i/elapsed)} hash/s"
+                report += f" in {round(elapsed/60)} minutes "
             elif 36000 < elapsed:
-                report += f" in {round(elapsed/3600)} hours at {round(i/elapsed)} hash/s"
+                report += f" in {round(elapsed/3600)} hours "
+            report += f"at {round(i/elapsed)} hash/s"
             print(report)
-            if j == zeros-1:
+            if j == zeros - 1:
                 nonce = i
         j += 1
     j = 0
     i += 1
 
-if n[zeros-1] == 1:
+if n[zeros - 1] == 1:
     print("nonce:", nonce)
     print(string)
     print(hashValue)
@@ -64,15 +66,15 @@ else:
 # Now plot the result in a bar chart
 import matplotlib.pyplot as plt
 
-x = range(1, zeros+1)
+x = range(1, zeros + 1)
 plt.bar(x, n)
-plt.xlabel('Leading zeros')
-plt.ylabel('Occurrences')
+plt.xlabel("Leading zeros")
+plt.ylabel("Occurrences")
 plt.show()
 
 # It is better to use a logarithmic scale for Y axis
 plt.bar(x, n)
-plt.xlabel('Leading zeros')
-plt.ylabel('Occurrences')
-plt.yscale('log', basey=16)
+plt.xlabel("Leading zeros")
+plt.ylabel("Occurrences")
+plt.yscale("log", basey=16)
 plt.show()

@@ -84,5 +84,5 @@ dersig = serialize(r2, s2, None)
 print("     bytes:", dersig)
 print("hex-string:", dersig.hex().upper())
 r3, s3 = deserialize(dersig)
-if r2==r3 and s2==s3:
+if r2 == r3 and s2 == s3:
     print("Succesfully deserialized!")
