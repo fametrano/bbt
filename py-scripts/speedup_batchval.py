@@ -23,14 +23,10 @@ hlen = hsize * 8
 
 # n = 1 loops forever and does not really test batch verify
 n_sig = [2, 4, 8, 16, 32, 64, 128]
-m = []
-sig = []
-Q = []
-for j in range(max(n_sig)):
-    m.append(random.getrandbits(hlen).to_bytes(hsize, "big"))
-    q = random.getrandbits(ec.nlen) % ec.n
-    sig.append(sign(m[j], q))
-    Q.append(mult(q, ec.G))
+m = [random.getrandbits(hlen).to_bytes(hsize, "big") for _ in range(max(n_sig))]
+q = [random.getrandbits(ec.nlen) % ec.n for _ in m]
+sig = [sign(msg, qq) for msg, qq in zip(m, q)]
+Q = [mult(qq, ec.G)[0] for qq in q]
 
 for n in n_sig:
 
@@ -42,7 +38,7 @@ for n in n_sig:
 
     # batch
     start = time.time()
-    assert batch_verify(m[:n], Q[:n], sig[:n])
+    assert batch_verify(m[:n], Q[:n], sig[:n]), n
     elapsed2 = time.time() - start
 
-    print(n, elapsed2 / elapsed1)
+print(n, elapsed2 / elapsed1)

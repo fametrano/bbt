@@ -12,7 +12,7 @@ import hashlib
 import time
 from typing import List
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # type: ignore
 
 msg = input('insert string (return for "Hello, world!"): ')
 if msg == "":
