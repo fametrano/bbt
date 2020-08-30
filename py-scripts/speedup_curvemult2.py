@@ -43,10 +43,18 @@ elapsed = time.time() - start
 print(f"Base 3           : {elapsed / benchmark_time:.0%}")
 
 start = time.time()
+w = 4
 for q in qs:
-    _mult_fixed_window(q, ec.GJ, 4, ec)
+    _mult_fixed_window(q, ec.GJ, w, ec)
 elapsed = time.time() - start
-print(f"Fixed window     : {elapsed / benchmark_time:.0%}")
+print(f"Fixed window {w}   : {elapsed / benchmark_time:.0%}")
+
+start = time.time()
+w = 5
+for q in qs:
+    _mult_fixed_window(q, ec.GJ, w, ec)
+elapsed = time.time() - start
+print(f"Fixed window {w}   : {elapsed / benchmark_time:.0%}")
 
 start = time.time()
 for q in qs:
