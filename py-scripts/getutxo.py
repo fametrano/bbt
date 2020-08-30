@@ -1,10 +1,11 @@
 # get unspent outputs from blockchain API
 
 import json
+
 import requests
 
 # example address
-address = '1Dorian4RoXcnBv9hnQ4Y2C1an6NJ4UrjX'
+address = "1Dorian4RoXcnBv9hnQ4Y2C1an6NJ4UrjX"
 
 # The API URL is https://blockchain.info/unspent?active=<address>
 # It returns a JSON object with a list "unspent_outputs",
@@ -22,7 +23,7 @@ address = '1Dorian4RoXcnBv9hnQ4Y2C1an6NJ4UrjX'
 # ...
 # ]}
 
-resp = requests.get(f'https://blockchain.info/unspent?active={address}')
+resp = requests.get(f"https://blockchain.info/unspent?active={address}")
 utxo_set = json.loads(resp.text)["unspent_outputs"]
 
 for utxo in utxo_set:

@@ -79,7 +79,6 @@ def pubkey_bytes_from_prvkey(prvkey, compressed=True):
         )
 
 
-
 print("\n** [1] Public Key compressed:")
 PubKey_bytes = pubkey_bytes_from_prvkey(prvkey, True)
 print(PubKey_bytes.hex())

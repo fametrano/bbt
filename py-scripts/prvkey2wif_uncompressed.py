@@ -41,9 +41,9 @@ print(checksummed_payload.hex())
 print("\n*** [7] Base58 encoding")
 wif = base58._b58encode(checksummed_payload)
 print(wif)
-assert wif == b'5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ'
+assert wif == b"5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ"
 wif = base58.b58encode(payload)
-assert wif == b'5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ'
+assert wif == b"5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ"
 
 print("\n****** WIF to private key ******")
 

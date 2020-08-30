@@ -135,7 +135,9 @@ for prime in primes:
         gx = 0
         gy = -1
         while gy == -1:
-            y2 = ((gx**2 + maxorderlessthanprimea) * gx + maxorderlessthanprimeb) % prime
+            y2 = (
+                (gx ** 2 + maxorderlessthanprimea) * gx + maxorderlessthanprimeb
+            ) % prime
             try:
                 y = mod_sqrt(y2, prime)
                 assert (y * y) % prime == y2
@@ -169,7 +171,7 @@ for prime in primes:
         gx = 0
         gy = -1
         while gy == -1:
-            y2 = ((gx**2 + maxordera) * gx + maxorderb) % prime
+            y2 = ((gx ** 2 + maxordera) * gx + maxorderb) % prime
             try:
                 y = mod_sqrt(y2, prime)
                 assert (y * y) % prime == y2

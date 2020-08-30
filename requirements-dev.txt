@@ -1,0 +1,6 @@
+# packages required to develop, build, and test bbt
+
+isort
+black
+flake8
+mypy

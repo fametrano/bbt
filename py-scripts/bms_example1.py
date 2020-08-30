@@ -80,7 +80,7 @@ print("BIP137 p2wpkh     :", verify(msg, address3, sig3))
 
 
 # uncompressed WIF / P2PKH address
-q, network, _ = prvkey_info_from_prvkey(wif)
+q, network, _ = prvkeyinfo_from_prvkey(wif)
 wif2 = wif_from_prvkey(q, network, compressed=False)
 print("\n1. Uncompressed WIF          :", wif2.decode())
 pubkey, network = pubkeyinfo_from_prvkey(wif2)

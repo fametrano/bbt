@@ -8,10 +8,11 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-import matplotlib.pyplot as plt
 import hashlib
 import time
 from typing import List
+
+import matplotlib.pyplot as plt
 
 msg = input('insert string (return for "Hello, world!"): ')
 if msg == "":

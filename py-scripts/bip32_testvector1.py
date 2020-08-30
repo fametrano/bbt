@@ -8,8 +8,7 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-from hashlib import sha512
-from hmac import HMAC
+import hmac
 
 from btclib.base58 import b58encode
 from btclib.curvemult import mult
@@ -41,12 +40,12 @@ fingerprint = b"\x00\x00\x00\x00"
 idf = depth + fingerprint + child_number
 
 # master private key, master public key, chain code
-hd = HMAC(b"Bitcoin seed", seed.to_bytes(seed_bytes, byteorder="big"), sha512).digest()
+hd = hmac.digest(b"Bitcoin seed", seed.to_bytes(seed_bytes, byteorder="big"), "sha512")
 qbytes = hd[:32]
 q = int(qbytes.hex(), 16) % ec.n
 qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Q = mult(q, ec.G)
-qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
+qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Qbytes = bytes_from_point(Q)
 chain_code = hd[32:]
 
@@ -74,11 +73,11 @@ fingerprint = hash160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0] > 127 else Qbytes
-hd = HMAC(chain_code, key + child_number, sha512).digest()
+hd = hmac.digest(chain_code, key + child_number, "sha512")
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Q = mult(q, ec.G)
-qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
+qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Qbytes = bytes_from_point(Q)
 chain_code = hd[32:]
 
@@ -105,11 +104,11 @@ fingerprint = hash160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0] > 127 else Qbytes
-hd = HMAC(chain_code, key + child_number, sha512).digest()
+hd = hmac.digest(chain_code, key + child_number, "sha512")
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Q = mult(q, ec.G)
-qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
+qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Qbytes = bytes_from_point(Q)
 chain_code = hd[32:]
 
@@ -136,11 +135,11 @@ fingerprint = hash160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0] > 127 else Qbytes
-hd = HMAC(chain_code, key + child_number, sha512).digest()
+hd = hmac.digest(chain_code, key + child_number, "sha512")
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Q = mult(q, ec.G)
-qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
+qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Qbytes = bytes_from_point(Q)
 chain_code = hd[32:]
 
@@ -167,11 +166,11 @@ fingerprint = hash160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0] > 127 else Qbytes
-hd = HMAC(chain_code, key + child_number, sha512).digest()
+hd = hmac.digest(chain_code, key + child_number, "sha512")
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Q = mult(q, ec.G)
-qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
+qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Qbytes = bytes_from_point(Q)
 chain_code = hd[32:]
 
@@ -198,11 +197,11 @@ fingerprint = hash160(Qbytes)[:4]
 idf = depth + fingerprint + child_number
 
 key = qbytes if child_number[0] > 127 else Qbytes
-hd = HMAC(chain_code, key + child_number, sha512).digest()
+hd = hmac.digest(chain_code, key + child_number, "sha512")
 q = (q + int(hd[:32].hex(), 16)) % ec.n
 qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Q = mult(q, ec.G)
-qbytes = b'\x00' + q.to_bytes(32, byteorder='big')
+qbytes = b"\x00" + q.to_bytes(32, byteorder="big")
 Qbytes = bytes_from_point(Q)
 chain_code = hd[32:]
 
