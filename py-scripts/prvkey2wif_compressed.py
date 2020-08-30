@@ -54,7 +54,7 @@ compressed = len(wif) - 51
 print("compressed" if (compressed == 1) else "uncompressed")
 
 print("\n*** [2] Base58 decoding")
-checksummed_payload = base58._b58decode(wif, None)
+checksummed_payload = base58._b58decode(wif)
 print(checksummed_payload.hex())
 
 print("\n*** [3] Extended key (checksum verified)")

@@ -28,8 +28,7 @@ for _ in range(50):
 
 start = time.time()
 for i in range(len(Q)):
-    ec.add(mult(k1[i], ec.G),
-           mult(k2[i], Q[i]))
+    ec.add(mult(k1[i], ec.G), mult(k2[i], Q[i]))
 elapsed1 = time.time() - start
 
 start = time.time()

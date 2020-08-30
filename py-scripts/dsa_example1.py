@@ -10,7 +10,7 @@
 
 from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
-from btclib.dsa import recover_pubkeys, sign, verify, serialize, deserialize
+from btclib.dsa import deserialize, recover_pubkeys, serialize, sign, verify
 
 print("\n*** EC:")
 print(ec)
@@ -21,7 +21,7 @@ print(msg1)
 
 print("1. Key generation")
 q = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
-q = q % ec.n
+q %= ec.n
 Q = mult(q, ec.G)
 print(f"prvkey:    {hex(q).upper()}")
 print(f"PubKey: {'02' if Q[1] % 2 == 0 else '03'} {hex(Q[0]).upper()}")
@@ -80,7 +80,7 @@ for i, key in enumerate(keys):
     print(f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
 
 print("\n** Serialize signature")
-dersig = serialize(r2, s2, None)
+dersig = serialize(r2, s2)
 print("     bytes:", dersig)
 print("hex-string:", dersig.hex().upper())
 r3, s3 = deserialize(dersig)

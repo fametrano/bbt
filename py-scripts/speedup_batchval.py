@@ -27,7 +27,7 @@ m = []
 sig = []
 Q = []
 for j in range(max(n_sig)):
-    m.append(random.getrandbits(hlen).to_bytes(hsize, 'big'))
+    m.append(random.getrandbits(hlen).to_bytes(hsize, "big"))
     q = random.getrandbits(ec.nlen) % ec.n
     sig.append(sign(m[j], q))
     Q.append(mult(q, ec.G))
