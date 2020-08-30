@@ -20,7 +20,7 @@ q = 0xC28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D
 print(hex(q))
 
 print("\n*** [2] payload (uncompressed):")
-payload = b'\x80' + q.to_bytes(32, 'big')
+payload = b"\x80" + q.to_bytes(32, "big")
 print(payload.hex())
 
 print("\n*** [3] SHA-256 hashing of the payload:")
@@ -49,7 +49,7 @@ print("\n****** WIF to private key ******")
 
 print("\n*** [1] Base58 WIF")
 print(wif)
-compressed = len(wif)-51
+compressed = len(wif) - 51
 print("compressed" if (compressed == 1) else "uncompressed")
 
 print("\n*** [2] Base58 decoding")
@@ -58,7 +58,7 @@ print(checksummed_payload.hex())
 
 print("\n*** [3] payload (checksum verified)")
 payload, checksum = checksummed_payload[:-4], checksummed_payload[-4:]
-verified = (sha256(sha256(payload).digest()).digest()[:4] == checksum)
+verified = sha256(sha256(payload).digest()).digest()[:4] == checksum
 print(payload.hex() + " (" + ("true" if verified else "false") + ")")
 print(base58.b58decode(wif).hex())
 

@@ -12,15 +12,15 @@ from btclib.base58address import p2pkh, p2wpkh_p2sh
 from btclib.base58wif import wif_from_prvkey
 from btclib.bech32address import p2wpkh
 from btclib.bms import serialize, sign, verify
-from btclib.to_prvkey import prvkey_info_from_prvkey
-from btclib.to_pubkey import pubkey_info_from_prvkey
+from btclib.to_prvkey import prvkeyinfo_from_prvkey
+from btclib.to_pubkey import pubkeyinfo_from_prvkey
 
 msg = "Paolo is afraid of ephemeral random numbers"
 print("\n0. Message:", msg)
 
-wif = b'Kx45GeUBSMPReYQwgXiKhG9FzNXrnCeutJp4yjTd5kKxCitadm3C'
+wif = b"Kx45GeUBSMPReYQwgXiKhG9FzNXrnCeutJp4yjTd5kKxCitadm3C"
 print("1. Compressed WIF:", wif.decode())
-pubkey, network = pubkey_info_from_prvkey(wif)
+pubkey, network = pubkeyinfo_from_prvkey(wif)
 
 print("2. Addresses")
 address1 = p2pkh(pubkey)
@@ -83,7 +83,7 @@ print("BIP137 p2wpkh     :", verify(msg, address3, sig3))
 q, network, _ = prvkey_info_from_prvkey(wif)
 wif2 = wif_from_prvkey(q, network, compressed=False)
 print("\n1. Uncompressed WIF          :", wif2.decode())
-pubkey, network = pubkey_info_from_prvkey(wif2)
+pubkey, network = pubkeyinfo_from_prvkey(wif2)
 
 address4 = p2pkh(pubkey)
 print("2. Uncompressed P2PKH address:", address4.decode())

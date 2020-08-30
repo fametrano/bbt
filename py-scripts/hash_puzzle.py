@@ -17,11 +17,8 @@ msg = input('insert string (return for "Hello, world!"): ')
 if msg == "":
     msg = "Hello, world!"
 
-zerostr = input('number of required zeros (return for 4 zeros): ')
-if zerostr == "":
-    zeros = 4
-else:
-    zeros = int(zerostr)
+zerostr = input("number of required zeros (return for 4 zeros): ")
+zeros = 4 if zerostr == "" else int(zerostr)
 assert zeros > 0, "the number of zeros to look for must be greater than zero"
 
 print(f"\nstring is: {msg}")
@@ -29,11 +26,11 @@ print(f"{zeros} required zeros")
 
 # n[i] is used to count the results starting with i+1 zeros
 n: List[int] = []
-maxEval = pow(16, zeros+1)
+maxEval = pow(16, zeros + 1)
 i = j = nonce = 0
 start = time.time()
 while i < maxEval and nonce == 0:
-    string = msg+str(i)
+    string = msg + str(i)
     hashValue = hashlib.sha256(string.encode()).hexdigest()
     while hashValue[j] == "0":
         if j < len(n):
@@ -52,13 +49,13 @@ while i < maxEval and nonce == 0:
                 report += f" in {round(elapsed/3600)} hours at "
                 report += f"{round(i/elapsed)} hash/s"
             print(report)
-            if j == zeros-1:
+            if j == zeros - 1:
                 nonce = i
         j += 1
     j = 0
     i += 1
 
-if n[zeros-1] == 1:
+if n[zeros - 1] == 1:
     print("nonce:", nonce)
     print(string)
     print(hashValue)
@@ -68,15 +65,15 @@ else:
 
 # Now plot the result in a bar chart
 
-x = range(1, zeros+1)
+x = range(1, zeros + 1)
 plt.bar(x, n)
-plt.xlabel('Leading zeros')
-plt.ylabel('Occurrences')
+plt.xlabel("Leading zeros")
+plt.ylabel("Occurrences")
 plt.show()
 
 # It is better to use a logarithmic scale for Y axis
 plt.bar(x, n)
-plt.xlabel('Leading zeros')
-plt.ylabel('Occurrences')
-plt.yscale('log', basey=16)
+plt.xlabel("Leading zeros")
+plt.ylabel("Occurrences")
+plt.yscale("log", basey=16)
 plt.show()

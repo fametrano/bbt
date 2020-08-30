@@ -14,6 +14,7 @@ from btclib.curvemult import mult
 from btclib.curves import secp256k1 as ec
 from btclib.numbertheory import mod_inv
 from btclib.utils import int_from_bits
+
 # note: no import from btclib.dsa
 # TODO implement pubkey recovery
 # TODO creack private key
@@ -36,7 +37,7 @@ print(f"PubKey: {'02' if Q[1] % 2 == 0 else '03'} {hex(Q[0]).upper()}")
 print("2. Sign message")
 msghd1 = sha256(msg1.encode()).digest()
 # hash(msg) must be transformed into an integer modulo ec.n:
-c1 = int.from_bytes(msghd1, 'big') % ec.n
+c1 = int.from_bytes(msghd1, "big") % ec.n
 c1 = int_from_bits(msghd1, ec.nlen) % ec.n
 assert c1 != 0
 print(f"    c1:    {hex(c1).upper()}")
@@ -44,9 +45,9 @@ print(f"    c1:    {hex(c1).upper()}")
 # ephemeral key k must be kept secret and never reused !!!!!
 # good choice: k = hf(q||c)
 # different for each msg, private because of q
-temp = q.to_bytes(32, 'big') + c1.to_bytes(32, 'big')
+temp = q.to_bytes(32, "big") + c1.to_bytes(32, "big")
 k1_bytes = sha256(temp).digest()
-k1 = int.from_bytes(k1_bytes, 'big') % ec.n
+k1 = int.from_bytes(k1_bytes, "big") % ec.n
 k1 = int_from_bits(k1_bytes, ec.nlen) % ec.n
 assert 0 < k1 < ec.n, "Invalid ephemeral key"
 print(f"eph k1:    {hex(k1).upper()}")
@@ -55,7 +56,7 @@ K1 = mult(k1, ec.G)
 r1 = K1[0] % ec.n
 # if r1 == 0 (extremely unlikely for large ec.n) go back to a different k
 assert r1 != 0
-s1 = (c1 + r1*q) * mod_inv(k1, ec.n) % ec.n
+s1 = (c1 + r1 * q) * mod_inv(k1, ec.n) % ec.n
 # if s1 == 0 (extremely unlikely for large ec.n) go back to a different k
 assert s1 != 0
 print(f"    r1:    {hex(r1).upper()}")
@@ -64,8 +65,8 @@ print(f"    s1:    {hex(s1).upper()}")
 
 print("3. Verify signature")
 w = mod_inv(s1, ec.n)
-u = (c1*w) % ec.n
-v = (r1*w) % ec.n
+u = (c1 * w) % ec.n
+v = (r1 * w) % ec.n
 assert u != 0
 assert v != 0
 U = mult(u, ec.G)
@@ -82,8 +83,8 @@ print(f"    sm:    {hex(sm).upper()}")
 
 print("** Verify malleated signature")
 w = mod_inv(sm, ec.n)
-u = c1*w % ec.n
-v = r1*w % ec.n
+u = c1 * w % ec.n
+v = r1 * w % ec.n
 assert u != 0
 assert v != 0
 U = mult(u, ec.G)
@@ -100,7 +101,7 @@ print(msg2)
 print("2. Sign message")
 msghd2 = sha256(msg2.encode()).digest()
 # hash(msg) must be transformed into an integer modulo ec.n:
-c2 = int.from_bytes(msghd2, 'big') % ec.n
+c2 = int.from_bytes(msghd2, "big") % ec.n
 c2 = int_from_bits(msghd2, ec.nlen) % ec.n
 assert c2 != 0
 print(f"    c2:    {hex(c2).upper()}")
@@ -113,7 +114,7 @@ K2 = mult(k2, ec.G)
 r2 = K2[0] % ec.n
 # if r2 == 0 (extremely unlikely for large ec.n) go back to a different k
 assert r2 != 0
-s2 = (c2 + r2*q) * mod_inv(k2, ec.n) % ec.n
+s2 = (c2 + r2 * q) * mod_inv(k2, ec.n) % ec.n
 # if s2 == 0 (extremely unlikely for large ec.n) go back to a different k
 assert s2 != 0
 print(f"    r2:    {hex(r2).upper()}")
@@ -122,8 +123,8 @@ print(f"    s2:    {hex(s2).upper()}")
 
 print("3. Verify signature")
 w = mod_inv(s2, ec.n)
-u = c2*w % ec.n
-v = r2*w % ec.n
+u = c2 * w % ec.n
+v = r2 * w % ec.n
 assert u != 0
 assert v != 0
 U = mult(u, ec.G)

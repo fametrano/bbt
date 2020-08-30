@@ -25,7 +25,7 @@ def isprime(n):
     i = 5
     w = 2
 
-    while i * i <= n:
+    while i ** 2 <= n:
         if n % i == 0:
             return False
 
@@ -35,11 +35,66 @@ def isprime(n):
     return True
 
 
-primes = [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73,
-          79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139,
-          149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223,
-          227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293
-          ]
+primes = [
+    11,
+    13,
+    17,
+    19,
+    23,
+    29,
+    31,
+    37,
+    41,
+    43,
+    47,
+    53,
+    59,
+    61,
+    67,
+    71,
+    73,
+    79,
+    83,
+    89,
+    97,
+    101,
+    103,
+    107,
+    109,
+    113,
+    127,
+    131,
+    137,
+    139,
+    149,
+    151,
+    157,
+    163,
+    167,
+    173,
+    179,
+    181,
+    191,
+    193,
+    197,
+    199,
+    211,
+    223,
+    227,
+    229,
+    233,
+    239,
+    241,
+    251,
+    257,
+    263,
+    269,
+    271,
+    277,
+    281,
+    283,
+    293,
+]
 for prime in primes:
     maxorder = 0
     maxordera = -1
@@ -51,14 +106,14 @@ for prime in primes:
         for b in range(200):
             order = 0
             for x in range(prime):
-                y2 = ((x*x + a)*x + b) % prime
+                y2 = ((x * x + a) * x + b) % prime
                 if y2 == 0:
                     order += 1
                     # print("#", order+1, " ", x, ", ", 0, "  #####", sep="")
                     continue
                 try:
                     y = mod_sqrt(y2, prime)
-                    assert (y*y) % prime == y2
+                    assert (y * y) % prime == y2
                     # print("#", order+1, " ", x, ",", y, sep="")
                     # print("#", order+2, " ", x, ",", prime-y, sep="")
                     order += 2
@@ -76,34 +131,71 @@ for prime in primes:
                     maxorderlessthanprimea = a
                     maxorderlessthanprimeb = b
 
-    if (maxorderlessthanprimea != -1):
+    if maxorderlessthanprimea != -1:
         gx = 0
         gy = -1
         while gy == -1:
-            y2 = ((gx*gx + maxorderlessthanprimea) *
-                  gx + maxorderlessthanprimeb) % prime
+            y2 = ((gx**2 + maxorderlessthanprimea) * gx + maxorderlessthanprimeb) % prime
             try:
                 y = mod_sqrt(y2, prime)
-                assert (y*y) % prime == y2
+                assert (y * y) % prime == y2
                 gy = y
             except Exception:
                 gx += 1
-        print("ec", prime, "_", maxorderlessthanprime, " = ",
-              "Curve(", maxorderlessthanprimea, ", ",
-              maxorderlessthanprimeb, ", ", prime, ", ", "(", gx, ",", gy,
-              ")", ", ", maxorderlessthanprime, ")", sep="")
-    if (maxordera != -1):
+        print(
+            "ec",
+            prime,
+            "_",
+            maxorderlessthanprime,
+            " = ",
+            "Curve(",
+            maxorderlessthanprimea,
+            ", ",
+            maxorderlessthanprimeb,
+            ", ",
+            prime,
+            ", ",
+            "(",
+            gx,
+            ",",
+            gy,
+            ")",
+            ", ",
+            maxorderlessthanprime,
+            ")",
+            sep="",
+        )
+    if maxordera != -1:
         gx = 0
         gy = -1
         while gy == -1:
-            y2 = ((gx*gx + maxordera)*gx + maxorderb) % prime
+            y2 = ((gx**2 + maxordera) * gx + maxorderb) % prime
             try:
                 y = mod_sqrt(y2, prime)
-                assert (y*y) % prime == y2
+                assert (y * y) % prime == y2
                 gy = y
             except Exception:
                 gx += 1
-        print("ec", prime, "_", maxorder, " = ",
-              "Curve(", maxordera, ", ",
-              maxorderb, ", ", prime, ", ", "(", gx, ",", gy,
-              ")", ", ", maxorder, ")", sep="")
+        print(
+            "ec",
+            prime,
+            "_",
+            maxorder,
+            " = ",
+            "Curve(",
+            maxordera,
+            ", ",
+            maxorderb,
+            ", ",
+            prime,
+            ", ",
+            "(",
+            gx,
+            ",",
+            gy,
+            ")",
+            ", ",
+            maxorder,
+            ")",
+            sep="",
+        )

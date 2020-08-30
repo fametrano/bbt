@@ -32,23 +32,23 @@ def _verhlp(ec: Curve, e: int, P: Point,
 
     if std or r < ec.p - ec.n:
         s1 = mod_inv(s, ec.n)
-        u1 = e*s1
-        u2 = r*s1                                              # 4
+        u1 = e * s1
+        u2 = r * s1  # 4
         # Let R = u*G + v*P.
         RJ = _double_mult(u1, ec.GJ, u2, (P[0], P[1], 1), ec)  # 5
 
         # Fail if infinite(R).
-        assert RJ[2] != 0, "how did you do that?!?"            # 5
+        assert RJ[2] != 0, "how did you do that?!?"  # 5
     else:
-        RJ = _double_mult(e, ec.GJ, r, (P[0], P[1], 1), ec)    # 5
+        RJ = _double_mult(e, ec.GJ, r, (P[0], P[1], 1), ec)  # 5
 
         # Fail if infinite(R).
-        assert RJ[2] != 0, "how did you do that?!?"            # 5
+        assert RJ[2] != 0, "how did you do that?!?"  # 5
 
         try:
             K = r, ec.y(r), 1
             sK = _mult_jac(s, K, ec)
-            if (sK[0]*RJ[2]*RJ[2] % ec._p) == (RJ[0]*sK[2]*sK[2] % ec._p):
+            if (sK[0] * RJ[2] * RJ[2] % ec._p) == (RJ[0] * sK[2] * sK[2] % ec._p):
                 return True
         except Exception:
             pass
@@ -56,10 +56,10 @@ def _verhlp(ec: Curve, e: int, P: Point,
         s1 = mod_inv(s, ec.n)
         RJ = _mult_jac(s1, RJ, ec)
 
-    Rx = (RJ[0]*mod_inv(RJ[2]*RJ[2], ec.p)) % ec.p
-    v = Rx % ec.n                                              # 6, 7
+    Rx = (RJ[0] * mod_inv(RJ[2] * RJ[2], ec.p)) % ec.p
+    v = Rx % ec.n  # 6, 7
     # Fail if r ≠ x(R) %n.
-    return r == v                                              # 8
+    return r == v  # 8
 
 
 random.seed(42)
