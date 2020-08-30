@@ -21,11 +21,10 @@ from btclib.curvemult2 import (
 )
 from btclib.curves import secp256k1 as ec
 
-random.seed(42)
-
 # setup
-qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(50)]
-# Standard jacobian multiplication with double and add
+random.seed(42)
+qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(100)]
+
 start = time.time()
 for q in qs:
     _mult_jac(q, ec.GJ, ec)
@@ -35,28 +34,28 @@ start = time.time()
 for q in qs:
     _mult_mont_ladder(q, ec.GJ, ec)
 elapsed = time.time() - start
-print(f"Montgomery ladder: {elapsed / benchmark_time:.2%}")
+print(f"Montgomery ladder: {elapsed / benchmark_time:.0%}")
 
 start = time.time()
 for q in qs:
     _mult_base_3(q, ec.GJ, ec)
 elapsed = time.time() - start
-print(f"Base 3           : {elapsed / benchmark_time:.2%}")
+print(f"Base 3           : {elapsed / benchmark_time:.0%}")
 
 start = time.time()
 for q in qs:
     _mult_fixed_window(q, ec.GJ, 4, ec)
 elapsed = time.time() - start
-print(f"Fixed window     : {elapsed / benchmark_time:.2%}")
+print(f"Fixed window     : {elapsed / benchmark_time:.0%}")
 
 start = time.time()
 for q in qs:
     _mult_sliding_window(q, ec.GJ, 5, ec)
 elapsed = time.time() - start
-print(f"Sliding window   : {elapsed / benchmark_time:.2%}")
+print(f"Sliding window   : {elapsed / benchmark_time:.0%}")
 
 start = time.time()
 for q in qs:
     _mult_w_NAF(q, ec.GJ, 4, ec)
 elapsed = time.time() - start
-print(f"wNAF             : {elapsed / benchmark_time:.2%}")
+print(f"wNAF             : {elapsed / benchmark_time:.0%}")
