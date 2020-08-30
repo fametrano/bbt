@@ -17,10 +17,7 @@ if msg == "":
     msg = "Hello, world!"
 
 zerostr = input("number of required zeros (return for 4 zeros): ")
-if zerostr == "":
-    zeros = 4
-else:
-    zeros = int(zerostr)
+zeros = 4 if zerostr == "" else int(zerostr)
 assert zeros > 0, "the number of zeros to look for must be greater than zero"
 
 print(f"\nstring is: {msg}")
@@ -45,7 +42,7 @@ while i < maxEval and nonce == 0:
                 report += f" in {round(elapsed)} seconds "
             elif 600 < elapsed <= 36000:
                 report += f" in {round(elapsed/60)} minutes "
-            elif 36000 < elapsed:
+            elif elapsed > 36000:
                 report += f" in {round(elapsed/3600)} hours "
             report += f"at {round(i/elapsed)} hash/s"
             print(report)

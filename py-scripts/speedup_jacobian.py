@@ -18,10 +18,7 @@ from btclib.curves import secp256k1 as ec
 random.seed(42)
 
 # setup
-qs = []
-for _ in range(50):
-    qs.append(random.getrandbits(ec.nlen) % ec.n)
-
+qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(50)]
 start = time.time()
 for q in qs:
     _mult_aff(q, ec.G, ec)

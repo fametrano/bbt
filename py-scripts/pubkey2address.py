@@ -86,8 +86,7 @@ print(PubKey_bytes.hex())
 
 def hash160(inp):
     h1 = hashlib.sha256(inp).digest()
-    result = hashlib.new("ripemd160", h1).digest()
-    return result
+    return hashlib.new("ripemd160", h1).digest()
 
 
 def address_from_pubkey_bytes(inp, version=b"\x00"):

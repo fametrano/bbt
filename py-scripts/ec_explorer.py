@@ -25,7 +25,7 @@ def isprime(n):
     i = 5
     w = 2
 
-    while i * i <= n:
+    while i ** 2 <= n:
         if n % i == 0:
             return False
 
@@ -135,9 +135,7 @@ for prime in primes:
         gx = 0
         gy = -1
         while gy == -1:
-            y2 = (
-                (gx * gx + maxorderlessthanprimea) * gx + maxorderlessthanprimeb
-            ) % prime
+            y2 = ((gx**2 + maxorderlessthanprimea) * gx + maxorderlessthanprimeb) % prime
             try:
                 y = mod_sqrt(y2, prime)
                 assert (y * y) % prime == y2
@@ -171,7 +169,7 @@ for prime in primes:
         gx = 0
         gy = -1
         while gy == -1:
-            y2 = ((gx * gx + maxordera) * gx + maxorderb) % prime
+            y2 = ((gx**2 + maxordera) * gx + maxorderb) % prime
             try:
                 y = mod_sqrt(y2, prime)
                 assert (y * y) % prime == y2
