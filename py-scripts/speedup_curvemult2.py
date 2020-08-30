@@ -12,67 +12,51 @@ import random
 import time
 
 from btclib.curvemult import _mult_jac
-from btclib.curvemult2 import _mult_base_3, _mult_fixed_window, _mult_mont_ladder, _mult_sliding_window, _mult_w_NAF
+from btclib.curvemult2 import (
+    _mult_base_3,
+    _mult_fixed_window,
+    _mult_mont_ladder,
+    _mult_sliding_window,
+    _mult_w_NAF,
+)
 from btclib.curves import secp256k1 as ec
 
 random.seed(42)
 
 # setup
-qs = []
-for _ in range(50):
-    qs.append(random.getrandbits(ec.nlen) % ec.n)
-
+qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(50)]
 # Standard jacobian multiplication with double and add
 start = time.time()
 for q in qs:
     _mult_jac(q, ec.GJ, ec)
-elapsed1 = time.time() - start
+benchmark_time = time.time() - start
 
-
-# Montogomery ladder jacobian multiplication
 start = time.time()
 for q in qs:
     _mult_mont_ladder(q, ec.GJ, ec)
-elapsed_mont_ladder = time.time() - start
+elapsed = time.time() - start
+print(f"Montgomery ladder: {elapsed / benchmark_time:.2%}")
 
-print("Montogomery ladder:")
-print(elapsed_mont_ladder / elapsed1)
-
-# Base 3 jacobian multiplication
 start = time.time()
 for q in qs:
     _mult_base_3(q, ec.GJ, ec)
-elapsed_base_3 = time.time() - start
+elapsed = time.time() - start
+print(f"Base 3           : {elapsed / benchmark_time:.2%}")
 
-print("Base 3 jacobian multiplication:")
-print(elapsed_base_3 / elapsed1)
-
-# Fixed window method 
 start = time.time()
 for q in qs:
     _mult_fixed_window(q, ec.GJ, 4, ec)
-elapsed_fixed_window = time.time() - start
+elapsed = time.time() - start
+print(f"Fixed window     : {elapsed / benchmark_time:.2%}")
 
-print("Fixed window jacobian multiplication:")
-print(elapsed_fixed_window / elapsed1)
-
-# Sliding window method
 start = time.time()
 for q in qs:
     _mult_sliding_window(q, ec.GJ, 5, ec)
-elapsed_sliding_window = time.time() - start
+elapsed = time.time() - start
+print(f"Sliding window   : {elapsed / benchmark_time:.2%}")
 
-print("Sliding window jacobian multiplication:")
-print(elapsed_sliding_window / elapsed1)
-
-# wNAF method
 start = time.time()
 for q in qs:
     _mult_w_NAF(q, ec.GJ, 4, ec)
-elapsed_wNAF = time.time() - start
-
-print("wNAF jacobian multiplication:")
-print(elapsed_wNAF / elapsed1)
-
-
-
+elapsed = time.time() - start
+print(f"wNAF             : {elapsed / benchmark_time:.2%}")
