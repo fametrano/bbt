@@ -11,29 +11,36 @@
 import random
 import time
 
-from btclib.curvemult import double_mult, mult
+from btclib.curvegroup import _double_mult, _mult_fixed_window
 from btclib.curves import secp256k1 as ec
 
 random.seed(42)
 
 # setup
-k1 = []
-k2 = []
-Q = []
-for _ in range(50):
-    k1.append(random.getrandbits(ec.nlen) % ec.n)
-    k2.append(random.getrandbits(ec.nlen) % ec.n)
+us = []
+vs = []
+QJs = []
+for _ in range(500):
+    us.append(random.getrandbits(ec.nlen) % ec.n)
+    vs.append(random.getrandbits(ec.nlen) % ec.n)
     q = random.getrandbits(ec.nlen) % ec.n
-    Q.append(mult(q, ec.G))
+    QJs.append(_mult_fixed_window(q, ec.GJ, ec))
+
+"""
+for u, v, QJ in zip(us, vs, QJs):
+    t1 = ec._add_jac(_mult_fixed_window(u, ec.GJ, ec), _mult_fixed_window(v, QJ, ec))
+    t2 = _double_mult(u, ec.GJ, v, QJ, ec)
+    assert ec._jac_equality(t1, t2)
+"""
 
 start = time.time()
-for i in range(len(Q)):
-    ec.add(mult(k1[i], ec.G), mult(k2[i], Q[i]))
+for u, v, QJ in zip(us, vs, QJs):
+    ec._add_jac(_mult_fixed_window(u, ec.GJ, ec), _mult_fixed_window(v, QJ, ec))
 elapsed1 = time.time() - start
 
 start = time.time()
-for i in range(len(Q)):
-    double_mult(k1[i], ec.G, k2[i], Q[i])
+for u, v, QJ in zip(us, vs, QJs):
+    _double_mult(u, ec.GJ, v, QJ, ec)
 elapsed2 = time.time() - start
 
-print(elapsed2 / elapsed1)
+print(f"{elapsed2 / elapsed1:.0%}")
