@@ -11,18 +11,26 @@
 import random
 import time
 
+from btclib.curve import secp256k1 as ec
 from btclib.curvegroup import (
+    _mult,
     _mult_base_3,
     _mult_fixed_window,
     _mult_jac,
     _mult_mont_ladder,
 )
-from btclib.curvemult2 import _mult_sliding_window, _mult_w_NAF
-from btclib.curves import secp256k1 as ec
+from btclib.curvegroup2 import _mult_sliding_window, _mult_w_NAF
 
 # setup
 random.seed(42)
 qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(300)]
+
+T = ec.GJ
+start = time.time()
+for q in qs:
+    T = _mult(q, T, ec)
+benchmark = time.time() - start
+print("benchmark completed")
 
 T = ec.GJ
 start = time.time()
@@ -76,11 +84,10 @@ wNAF = time.time() - start
 print("wNAF completed")
 
 print("-----")
-benchmark_time = fixed_window_5
-print(f"double & add     : {double_and_add / benchmark_time:.0%}")
-print(f"Montgomery ladder: {montgomery / benchmark_time:.0%}")
-print(f"Base 3           : {base3 / benchmark_time:.0%}")
-print(f"Fixed window 4   : {fixed_window_4 / benchmark_time:.0%}")
-print(f"Fixed window 5   : {fixed_window_5 / benchmark_time:.0%}")
-print(f"Sliding window   : {sliding_window / benchmark_time:.0%}")
-print(f"wNAF             : {wNAF / benchmark_time:.0%}")
+print(f"double & add     : {double_and_add / benchmark:.0%}")
+print(f"Montgomery ladder: {montgomery / benchmark:.0%}")
+print(f"Base 3           : {base3 / benchmark:.0%}")
+print(f"Fixed window 4   : {fixed_window_4 / benchmark:.0%}")
+print(f"Fixed window 5   : {fixed_window_5 / benchmark:.0%}")
+print(f"Sliding window   : {sliding_window / benchmark:.0%}")
+print(f"wNAF             : {wNAF / benchmark:.0%}")

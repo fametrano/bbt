@@ -11,8 +11,8 @@
 import random
 import time
 
-from btclib.curvegroup import _double_mult, _mult_fixed_window
-from btclib.curves import secp256k1 as ec
+from btclib.curve import secp256k1 as ec
+from btclib.curvegroup import _double_mult, _mult
 
 random.seed(42)
 
@@ -24,18 +24,18 @@ for _ in range(500):
     us.append(random.getrandbits(ec.nlen) % ec.n)
     vs.append(random.getrandbits(ec.nlen) % ec.n)
     q = random.getrandbits(ec.nlen) % ec.n
-    QJs.append(_mult_fixed_window(q, ec.GJ, ec))
+    QJs.append(_mult(q, ec.GJ, ec))
 
 """
 for u, v, QJ in zip(us, vs, QJs):
-    t1 = ec._add_jac(_mult_fixed_window(u, ec.GJ, ec), _mult_fixed_window(v, QJ, ec))
+    t1 = ec._add_jac(_mult(u, ec.GJ, ec), _mult(v, QJ, ec))
     t2 = _double_mult(u, ec.GJ, v, QJ, ec)
     assert ec._jac_equality(t1, t2)
 """
 
 start = time.time()
 for u, v, QJ in zip(us, vs, QJs):
-    ec._add_jac(_mult_fixed_window(u, ec.GJ, ec), _mult_fixed_window(v, QJ, ec))
+    ec._add_jac(_mult(u, ec.GJ, ec), _mult(v, QJ, ec))
 elapsed1 = time.time() - start
 
 start = time.time()
