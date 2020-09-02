@@ -18,70 +18,92 @@ from btclib.curvegroup import (
     _mult_fixed_window,
     _mult_jac,
     _mult_mont_ladder,
+    cached_multiples,
 )
 from btclib.curvegroup2 import _mult_sliding_window, _mult_w_NAF
 
 # setup
 random.seed(42)
 qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(300)]
+cached_multiples(ec.GJ, ec)
+
+gen_only = False
 
 T = ec.GJ
 start = time.time()
 for q in qs:
-    T = _mult(q, T, ec)
+    T = _mult(q, ec.GJ, ec) if gen_only else _mult(q, T, ec)
 benchmark = time.time() - start
 print("benchmark completed")
 
 T = ec.GJ
 start = time.time()
 for q in qs:
-    T = _mult_jac(q, T, ec)
+    T = _mult_jac(q, ec.GJ, ec) if gen_only else _mult_jac(q, T, ec)
 double_and_add = time.time() - start
 print("double_and_add completed")
 
 T = ec.GJ
 start = time.time()
 for q in qs:
-    T = _mult_mont_ladder(q, T, ec)
+    T = _mult_mont_ladder(q, ec.GJ, ec) if gen_only else _mult_mont_ladder(q, T, ec)
 montgomery = time.time() - start
 print("montgomery completed")
 
 T = ec.GJ
 start = time.time()
 for q in qs:
-    T = _mult_base_3(q, T, ec)
+    T = _mult_base_3(q, ec.GJ, ec) if gen_only else _mult_base_3(q, T, ec)
 base3 = time.time() - start
 print("base3 completed")
 
 T = ec.GJ
-start = time.time()
 w = 4
+start = time.time()
 for q in qs:
-    T = _mult_fixed_window(q, T, ec, w)
+    T = _mult_fixed_window(q, ec.GJ, ec, w) if gen_only else _mult_fixed_window(q, T, ec, w)
 fixed_window_4 = time.time() - start
-print("fixed_window_4 completed")
+print(f"fixed_window_{w} completed")
 
 T = ec.GJ
-start = time.time()
 w = 5
+start = time.time()
 for q in qs:
-    T = _mult_fixed_window(q, T, ec, w)
+    T = _mult_fixed_window(q, ec.GJ, ec, w) if gen_only else _mult_fixed_window(q, T, ec, w)
 fixed_window_5 = time.time() - start
-print("fixed_window_5 completed")
+print(f"fixed_window_{w} completed")
 
 T = ec.GJ
+w = 4
 start = time.time()
 for q in qs:
-    T = _mult_sliding_window(q, T, ec, 5)
-sliding_window = time.time() - start
-print("sliding_window completed")
+    T = _mult_sliding_window(q, ec.GJ, ec, 5) if gen_only else _mult_sliding_window(q, T, ec, w)
+sliding_window_4 = time.time() - start
+print(f"sliding_window_{w} completed")
 
 T = ec.GJ
+w = 5
 start = time.time()
 for q in qs:
-    T = _mult_w_NAF(q, T, ec, 4)
-wNAF = time.time() - start
-print("wNAF completed")
+    T = _mult_sliding_window(q, ec.GJ, ec, 5) if gen_only else _mult_sliding_window(q, T, ec, w)
+sliding_window_5 = time.time() - start
+print(f"sliding_window_{w} completed")
+
+T = ec.GJ
+w = 4
+start = time.time()
+for q in qs:
+    T = _mult_w_NAF(q, ec.GJ, ec, 4) if gen_only else _mult_w_NAF(q, T, ec, w)
+wNAF_4 = time.time() - start
+print(f"wNAF_{w} completed")
+
+T = ec.GJ
+w = 5
+start = time.time()
+for q in qs:
+    T = _mult_w_NAF(q, ec.GJ, ec, 4) if gen_only else _mult_w_NAF(q, T, ec, w)
+wNAF_5 = time.time() - start
+print(f"wNAF_{w} completed")
 
 print("-----")
 print(f"double & add     : {double_and_add / benchmark:.0%}")
@@ -89,5 +111,7 @@ print(f"Montgomery ladder: {montgomery / benchmark:.0%}")
 print(f"Base 3           : {base3 / benchmark:.0%}")
 print(f"Fixed window 4   : {fixed_window_4 / benchmark:.0%}")
 print(f"Fixed window 5   : {fixed_window_5 / benchmark:.0%}")
-print(f"Sliding window   : {sliding_window / benchmark:.0%}")
-print(f"wNAF             : {wNAF / benchmark:.0%}")
+print(f"Sliding window 4 : {sliding_window_4 / benchmark:.0%}")
+print(f"Sliding window 5 : {sliding_window_5 / benchmark:.0%}")
+print(f"wNAF 4           : {wNAF_4 / benchmark:.0%}")
+print(f"wNAF 5           : {wNAF_5 / benchmark:.0%}")
