@@ -50,6 +50,7 @@ for q in qs:
 montgomery = time.time() - start
 print("montgomery completed")
 
+cached_multiples(ec.GJ, ec)
 T = ec.GJ
 start = time.time()
 for q in qs:
@@ -57,6 +58,7 @@ for q in qs:
 base3 = time.time() - start
 print("base3 completed")
 
+cached_multiples(ec.GJ, ec)
 T = ec.GJ
 w = 4
 start = time.time()
@@ -65,6 +67,7 @@ for q in qs:
 fixed_window_4 = time.time() - start
 print(f"fixed_window_{w} completed")
 
+cached_multiples(ec.GJ, ec)
 T = ec.GJ
 w = 5
 start = time.time()
@@ -73,6 +76,7 @@ for q in qs:
 fixed_window_5 = time.time() - start
 print(f"fixed_window_{w} completed")
 
+cached_multiples(ec.GJ, ec)
 T = ec.GJ
 w = 4
 start = time.time()
@@ -81,6 +85,7 @@ for q in qs:
 sliding_window_4 = time.time() - start
 print(f"sliding_window_{w} completed")
 
+cached_multiples(ec.GJ, ec)
 T = ec.GJ
 w = 5
 start = time.time()
@@ -89,6 +94,7 @@ for q in qs:
 sliding_window_5 = time.time() - start
 print(f"sliding_window_{w} completed")
 
+cached_multiples(ec.GJ, ec)
 T = ec.GJ
 w = 4
 start = time.time()
@@ -97,6 +103,7 @@ for q in qs:
 wNAF_4 = time.time() - start
 print(f"wNAF_{w} completed")
 
+cached_multiples(ec.GJ, ec)
 T = ec.GJ
 w = 5
 start = time.time()
