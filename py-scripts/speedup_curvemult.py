@@ -19,6 +19,7 @@ from btclib.curvegroup import (
     _mult_jac,
     _mult_mont_ladder,
     cached_multiples,
+    _MAX_W
 )
 from btclib.curvegroup2 import _mult_sliding_window, _mult_w_NAF
 
@@ -27,7 +28,7 @@ random.seed(42)
 qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(300)]
 cached_multiples(ec.GJ, ec)
 
-gen_only = False
+gen_only = True
 
 T = ec.GJ
 start = time.time()
@@ -78,6 +79,15 @@ print(f"fixed_window_{w} completed")
 
 cached_multiples(ec.GJ, ec)
 T = ec.GJ
+w = _MAX_W
+start = time.time()
+for q in qs:
+    T = _mult_fixed_window(q, ec.GJ, ec, w, True) if gen_only else _mult_fixed_window(q, T, ec, w, True)
+fixed_window_ca = time.time() - start
+print(f"fixed_window_{w} cached completed")
+
+cached_multiples(ec.GJ, ec)
+T = ec.GJ
 w = 4
 start = time.time()
 for q in qs:
@@ -118,6 +128,7 @@ print(f"Montgomery ladder: {montgomery / benchmark:.0%}")
 print(f"Base 3           : {base3 / benchmark:.0%}")
 print(f"Fixed window 4   : {fixed_window_4 / benchmark:.0%}")
 print(f"Fixed window 5   : {fixed_window_5 / benchmark:.0%}")
+print(f"Fixed window ca  : {fixed_window_ca / benchmark:.0%}")
 print(f"Sliding window 4 : {sliding_window_4 / benchmark:.0%}")
 print(f"Sliding window 5 : {sliding_window_5 / benchmark:.0%}")
 print(f"wNAF 4           : {wNAF_4 / benchmark:.0%}")
