@@ -16,9 +16,11 @@ from btclib.curvegroup import (
     _mult,
     _mult_base_3,
     _mult_fixed_window,
+    _mult_fixed_window_cached,
     _mult_jac,
     _mult_mont_ladder,
-    cached_multiples
+    cached_multiples,
+    cached_multiples_fixwind,
 )
 from btclib.curvegroup2 import _mult_sliding_window, _mult_w_NAF
 
@@ -26,7 +28,7 @@ from btclib.curvegroup2 import _mult_sliding_window, _mult_w_NAF
 random.seed(42)
 qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(300)]
 
-gen_only = False
+gen_only = True
 print("generator only") if gen_only else print("random points")
 
 cached_multiples.cache_clear()
@@ -104,6 +106,15 @@ for q in qs:
     T = _mult_fixed_window(q, ec.GJ, ec, w, cached) if gen_only else _mult_fixed_window(q, T, ec, w, cached)
 fixed_window_5_ca = time.time() - start
 print(f"Fixed window 5 ca: {fixed_window_5_ca / benchmark:.0%}", cached_multiples.cache_info())
+
+cached_multiples_fixwind.cache_clear()
+cached_multiples_fixwind(ec.GJ, ec)
+T = ec.GJ
+start = time.time()
+for q in qs:
+    T = _mult_fixed_window_cached(q, ec.GJ, ec) if gen_only else _mult_fixed_window_cached(q, T, ec)
+fixed_window_cached = time.time() - start
+print(f"New Fixed window : {fixed_window_cached / benchmark:.0%}", cached_multiples_fixwind.cache_info())
 
 cached_multiples.cache_clear()
 cached_multiples(ec.GJ, ec)
