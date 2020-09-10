@@ -21,7 +21,7 @@ from btclib.curvegroup import (
 
 # setup
 random.seed(42)
-qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(300)]
+qs = [random.getrandbits(ec.nlen) % ec.n for _ in range(100)]
 
 start = time.time()
 for q in qs:
