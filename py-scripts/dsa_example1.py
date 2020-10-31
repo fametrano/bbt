@@ -8,8 +8,8 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-from btclib.curvemult import mult
-from btclib.curves import secp256k1 as ec
+from btclib.curve import mult
+from btclib.curve import secp256k1 as ec
 from btclib.dsa import deserialize, recover_pubkeys, serialize, sign, verify
 
 print("\n*** EC:")

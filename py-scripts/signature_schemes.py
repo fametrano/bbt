@@ -1,5 +1,4 @@
-from btclib import dsa, ssa, bms
-from btclib.curves import secp256k1 as ec
+from btclib import bms, dsa, ssa
 
 msg = "Hello, I'm Alice!"
 print("\n", msg)

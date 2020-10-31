@@ -3,8 +3,8 @@
 import hmac
 
 from btclib.base58 import b58encode
-from btclib.curvemult import mult
-from btclib.curves import secp256k1 as ec
+from btclib.curve import mult
+from btclib.curve import secp256k1 as ec
 from btclib.secpoint import bytes_from_point
 from btclib.utils import hash160
 
