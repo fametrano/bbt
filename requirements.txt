@@ -1,2 +1,4 @@
 btclib
 matplot
+ipykernel
+pandas
