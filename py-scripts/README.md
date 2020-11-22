@@ -6,10 +6,6 @@ to execute them, btclib must have been installed.
 
     pip install --upgrade btclib
 
-matplot is used for plotting charts
-
-    pip install --upgrade matplot
-
-or to install all dependencies
+There are othere dependencies, to install all of them:
 
     pip install --upgrade -r requirements.txt
