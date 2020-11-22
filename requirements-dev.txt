@@ -1,6 +1,10 @@
 # packages required to develop, build, and test bbt
 
-isort
+pip
+wheel
+
 black
 flake8
+isort
 mypy
+pylint
