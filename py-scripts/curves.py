@@ -393,23 +393,27 @@ h = 1
 # bpp512t1
 
 filename = path.join(datadir, "ec_Brainpool.json")
-with open(filename, "w") as json_file:
-    json.dump(Brainpool_params, json_file, sort_keys=True, indent=4)
+with open(filename, "w") as file_:
+    json.dump(Brainpool_params, file_, sort_keys=True, indent=4)
 
 
 if __name__ == "__main__":
-    with open("ec_Brainpool.json", "r") as f:
-        Brainpool_params2 = json.load(f)
+    filename = path.join(datadir, "ec_Brainpool.json")
+    with open(filename, "r") as file_:
+        Brainpool_params2 = json.load(file_)
     assert Brainpool_params == Brainpool_params2
 
-    with open("ec_NIST.json", "r") as f:
-        NIST_params2 = json.load(f)
+    filename = path.join(datadir, "ec_NIST.json")
+    with open(filename, "r") as file_:
+        NIST_params2 = json.load(file_)
     assert NIST_params == NIST_params2
 
-    with open("ec_SEC2v1_insecure.json", "r") as f:
-        SEC2v1_params2 = json.load(f)
+    filename = path.join(datadir, "ec_SEC2v1_insecure.json")
+    with open(filename, "r") as file_:
+        SEC2v1_params2 = json.load(file_)
     assert SEC2v1_params == SEC2v1_params2
 
-    with open("ec_SEC2v2.json", "r") as f:
-        SEC2v2_params2 = json.load(f)
+    filename = path.join(datadir, "ec_SEC2v2.json")
+    with open(filename, "r") as file_:
+        SEC2v2_params2 = json.load(file_)
     assert SEC2v2_params == SEC2v2_params2
