@@ -22,9 +22,9 @@ print(ec)
 
 print("1. Key generation")
 q = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
-q = q % ec.n
+q %= ec.n
 Q = mult(q, ec.G)
-if not ec.has_square_y(Q):
+if Q[1] % 2:
     q = ec.n - q
     Q = (Q[0], ec.p - Q[1])
 print(f"prvkey: {hex(q).upper()}")

@@ -46,7 +46,7 @@ while i < maxEval and nonce == 0:
             elif 600 < elapsed <= 36000:
                 report += f" in {round(elapsed/60)} minutes at "
                 report += f"{round(i/elapsed)} hash/s"
-            elif 36000 < elapsed:
+            elif elapsed > 36000:
                 report += f" in {round(elapsed/3600)} hours at "
                 report += f"{round(i/elapsed)} hash/s"
             print(report)

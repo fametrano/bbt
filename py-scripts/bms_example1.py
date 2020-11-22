@@ -11,7 +11,7 @@
 from btclib.base58address import p2pkh, p2wpkh_p2sh
 from btclib.base58wif import wif_from_prvkey
 from btclib.bech32address import p2wpkh
-from btclib.bms import serialize, sign, verify
+from btclib.bms import encode, sign, verify
 from btclib.to_prvkey import prvkeyinfo_from_prvkey
 from btclib.to_pubkey import pubkeyinfo_from_prvkey
 
@@ -37,7 +37,7 @@ print(f"rf1: {sig1[0]}")
 print(f" r1: {hex(sig1[1]).upper()}")
 print(f" s1: {hex(sig1[2]).upper()}")
 
-bsmsig1 = serialize(*sig1)
+bsmsig1 = encode(*sig1)
 print("4. Serialized signature:")
 print(bsmsig1.decode())
 
@@ -53,7 +53,7 @@ print(f"rf2: {sig2[0]}")
 print(f" r2: {hex(sig2[1]).upper()}")
 print(f" s2: {hex(sig2[2]).upper()}")
 
-bsmsig2 = serialize(*sig2)
+bsmsig2 = encode(*sig2)
 print("4. Serialized signature:")
 print(bsmsig2.decode())
 
@@ -69,7 +69,7 @@ print(f"rf3: {sig3[0]}")
 print(f" r3: {hex(sig3[1]).upper()}")
 print(f" s3: {hex(sig3[2]).upper()}")
 
-bsmsig3 = serialize(*sig3)
+bsmsig3 = encode(*sig3)
 print("4. Serialized signature:")
 print(bsmsig3.decode())
 
@@ -94,7 +94,7 @@ print(f"rf4: {sig4[0]}")
 print(f" r4: {hex(sig4[1]).upper()}")
 print(f" s4: {hex(sig4[2]).upper()}")
 
-bsmsig4 = serialize(*sig4)
+bsmsig4 = encode(*sig4)
 print("4. Serialized signature:")
 print(bsmsig4.decode())
 
