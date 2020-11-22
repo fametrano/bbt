@@ -22,7 +22,7 @@ from btclib.curvegroup import (
     cached_multiples,
     cached_multiples_fixwind,
 )
-from btclib.curvegroup2 import _mult_sliding_window, _mult_w_NAF
+from btclib.curvegroup2 import _mult_sliding_window, _mult_w_NAF, _mult_endomorphism_secp256k1
 
 # setup
 random.seed(42)
@@ -155,3 +155,11 @@ for q in qs:
     T = _mult_w_NAF(q, ec.GJ, ec, 4) if gen_only else _mult_w_NAF(q, T, ec, w)
 wNAF_5 = time.time() - start
 print(f"wNAF 5           : {wNAF_5 / benchmark:.0%}", cached_multiples.cache_info())
+
+
+T = ec.GJ
+start = time.time()
+for q in qs:
+    T = _mult_endomorphism_secp256k1(q, ec.GJ, ec) if gen_only else _mult_endomorphism_secp256k1(q, T, ec)
+endomorphism1 = time.time() - start
+print(f"Mult eff end     : {endomorphism1 / benchmark:.0%}")
