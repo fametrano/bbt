@@ -8,38 +8,41 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-from btclib.base58address import p2pkh, p2wpkh_p2sh
-from btclib.base58wif import wif_from_prvkey
-from btclib.bech32address import p2wpkh
-from btclib.bms import encode, sign, verify
-from btclib.to_prvkey import prvkeyinfo_from_prvkey
-from btclib.to_pubkey import pubkeyinfo_from_prvkey
+from btclib.b58 import p2pkh, p2wpkh_p2sh
+from btclib.b58 import wif_from_prv_key
+from btclib.b32 import p2wpkh
+from btclib.ecc.bms import sign, verify
+from btclib.to_prv_key import prv_keyinfo_from_prv_key
+from btclib.to_pub_key import pub_keyinfo_from_prv_key
 
-msg = "Paolo is afraid of ephemeral random numbers"
-print("\n0. Message:", msg)
+msg = "Paolo is afraid of ephemeral random numbers".encode()
+print("\n0. Message:", msg.decode())
 
 wif = b"Kx45GeUBSMPReYQwgXiKhG9FzNXrnCeutJp4yjTd5kKxCitadm3C"
 print("1. Compressed WIF:", wif.decode())
-pubkey, network = pubkeyinfo_from_prvkey(wif)
+pubkey, network = pub_keyinfo_from_prv_key(wif)
 
 print("2. Addresses")
 address1 = p2pkh(pubkey)
-print("      p2pkh:", address1.decode())
+print("      p2pkh:", address1)
 address2 = p2wpkh_p2sh(pubkey)
-print("p2wpkh_p2sh:", address2.decode())
+print("p2wpkh_p2sh:", address2)
 address3 = p2wpkh(pubkey)
-print("     p2wpkh:", address3.decode())
+print("     p2wpkh:", address3)
 
 
-print("\n3. Sign message with no address (or with compressed p2pkh address):")
+print(
+    "\n3. Sign message with no address (i.e., with default compressed p2pkh address):"
+)
 sig1 = sign(msg, wif)
-print(f"rf1: {sig1[0]}")
-print(f" r1: {hex(sig1[1]).upper()}")
-print(f" s1: {hex(sig1[2]).upper()}")
+print(f"rf1: {sig1.rf}")
+print(f" r1: {hex(sig1.dsa_sig.r).upper()}")
+print(f" s1: {hex(sig1.dsa_sig.r).upper()}")
 
-bsmsig1 = encode(*sig1)
+bsmsig1 = sig1.serialize()
 print("4. Serialized signature:")
-print(bsmsig1.decode())
+print("     bytes:", bsmsig1)
+print("hex-string:", bsmsig1.hex().upper())
 
 print("5. Verify signature")
 print("Bitcoin Core p2pkh  :", verify(msg, address1, sig1))
@@ -49,13 +52,14 @@ print("Electrum p2wpkh     :", verify(msg, address3, sig1))
 
 print("\n3. Sign message with p2wpkh_p2sh address (BIP137):")
 sig2 = sign(msg, wif, address2)
-print(f"rf2: {sig2[0]}")
-print(f" r2: {hex(sig2[1]).upper()}")
-print(f" s2: {hex(sig2[2]).upper()}")
+print(f"rf2: {sig2.rf}")
+print(f" r2: {hex(sig2.dsa_sig.r).upper()}")
+print(f" s2: {hex(sig2.dsa_sig.s).upper()}")
 
-bsmsig2 = encode(*sig2)
+bsmsig2 = sig2.serialize()
 print("4. Serialized signature:")
-print(bsmsig2.decode())
+print("     bytes:", bsmsig2)
+print("hex-string:", bsmsig2.hex().upper())
 
 print("5. Verify signature")
 print("Bitcoin Core p2pkh:", verify(msg, address1, sig2))
@@ -65,13 +69,14 @@ print("BIP137 p2wpkh     :", verify(msg, address3, sig2))
 
 print("\n3. Sign message with p2wpkh address (BIP137):")
 sig3 = sign(msg, wif, address3)
-print(f"rf3: {sig3[0]}")
-print(f" r3: {hex(sig3[1]).upper()}")
-print(f" s3: {hex(sig3[2]).upper()}")
+print(f"rf3: {sig3.rf}")
+print(f" r3: {hex(sig3.dsa_sig.r).upper()}")
+print(f" s3: {hex(sig3.dsa_sig.s).upper()}")
 
-bsmsig3 = encode(*sig3)
+bsmsig3 = sig3.serialize()
 print("4. Serialized signature:")
-print(bsmsig3.decode())
+print("     bytes:", bsmsig3)
+print("hex-string:", bsmsig3.hex().upper())
 
 print("5. Verify signature")
 print("Bitcoin Core p2pkh:", verify(msg, address1, sig3))
@@ -80,23 +85,24 @@ print("BIP137 p2wpkh     :", verify(msg, address3, sig3))
 
 
 # uncompressed WIF / P2PKH address
-q, network, _ = prvkeyinfo_from_prvkey(wif)
-wif2 = wif_from_prvkey(q, network, compressed=False)
-print("\n1. Uncompressed WIF          :", wif2.decode())
-pubkey, network = pubkeyinfo_from_prvkey(wif2)
+q, network, _ = prv_keyinfo_from_prv_key(wif)
+wif2 = wif_from_prv_key(q, network, compressed=False)
+print("\n1. Uncompressed WIF          :", wif2)
+pubkey, network = pub_keyinfo_from_prv_key(wif2)
 
 address4 = p2pkh(pubkey)
-print("2. Uncompressed P2PKH address:", address4.decode())
+print("2. Uncompressed P2PKH address:", address4)
 
 print("3. Sign message with uncompressed p2pkh:")
 sig4 = sign(msg, wif2, address4)
-print(f"rf4: {sig4[0]}")
-print(f" r4: {hex(sig4[1]).upper()}")
-print(f" s4: {hex(sig4[2]).upper()}")
+print(f"rf4: {sig4.rf}")
+print(f" r4: {hex(sig4.dsa_sig.r).upper()}")
+print(f" s4: {hex(sig4.dsa_sig.s).upper()}")
 
-bsmsig4 = encode(*sig4)
+bsmsig4 = sig4.serialize()
 print("4. Serialized signature:")
-print(bsmsig4.decode())
+print("     bytes:", bsmsig4)
+print("hex-string:", bsmsig4.hex().upper())
 
 print("5. Verify signature")
 print("Bitcoin Core compressed p2pkh  :", verify(msg, address1, sig4))
