@@ -73,8 +73,7 @@ plt.ylabel("Occurrences")
 plt.show()
 
 # It is better to use a logarithmic scale for Y axis
-plt.bar(x, n)
+plt.bar(x, n, log="true")
 plt.xlabel("Leading zeros")
 plt.ylabel("Occurrences")
-plt.yscale("log", base=16)
 plt.show()

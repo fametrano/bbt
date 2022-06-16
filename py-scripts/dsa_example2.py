@@ -22,17 +22,17 @@ from btclib.utils import int_from_bits
 print("\n*** EC:")
 print(ec)
 
-print("\n0. Message to be signed")
-msg1 = "Paolo is afraid of ephemeral random numbers".encode()
-print(msg1.decode())
-
-print("1. Key generation")
+print("0. Key generation")
 q = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
 q %= ec.n
 Q = mult(q, ec.G)
 print(f"prvkey:    {hex(q).upper()}")
 print(f"PubKey: {'02' if Q[1] % 2 == 0 else '03'} {hex(Q[0]).upper()}")
 
+
+print("\n1. Message to be signed")
+msg1 = "Paolo is afraid of ephemeral random numbers".encode()
+print(msg1.decode())
 
 print("2. Sign message")
 msghd1 = sha256(msg1).digest()
@@ -62,7 +62,6 @@ assert s1 != 0
 print(f"    r1:    {hex(r1).upper()}")
 print(f"    s1:    {hex(s1).upper()}")
 
-
 print("3. Verify signature")
 w = mod_inv(s1, ec.n)
 u = (c1 * w) % ec.n
@@ -80,7 +79,6 @@ sm = ec.n - s1
 print(f"    r1:    {hex(r1).upper()}")
 print(f"    sm:    {hex(sm).upper()}")
 
-
 print("** Verify malleated signature")
 w = mod_inv(sm, ec.n)
 u = c1 * w % ec.n
@@ -93,10 +91,9 @@ x, y = ec.add(U, V)
 print(r1 == x % ec.n)
 
 
-print("\n0. Another message to sign")
+print("\n1. Another message to sign")
 msg2 = "and Paolo is right to be afraid".encode()
 print(msg2.decode())
-
 
 print("2. Sign message")
 msghd2 = sha256(msg2).digest()
@@ -119,7 +116,6 @@ s2 = (c2 + r2 * q) * mod_inv(k2, ec.n) % ec.n
 assert s2 != 0
 print(f"    r2:    {hex(r2).upper()}")
 print(f"    s2:    {hex(s2).upper()}")
-
 
 print("3. Verify signature")
 w = mod_inv(s2, ec.n)

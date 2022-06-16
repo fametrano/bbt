@@ -20,7 +20,7 @@ from btclib.utils import int_from_bits
 print("\n*** EC:")
 print(ec)
 
-print("1. Key generation")
+print("Key generation")
 q = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
 q %= ec.n
 Q = mult(q, ec.G)
@@ -31,7 +31,7 @@ print(f"prvkey: {hex(q).upper()}")
 print(f"PubKey: {hex(Q[0]).upper()}")
 
 
-print("\n0. Message to be signed")
+print("\n1. Message to be signed")
 orig_msg1 = "Paolo is afraid of ephemeral random numbers"
 msg1 = sha256(orig_msg1.encode()).digest()
 print(msg1.hex().upper())
@@ -65,7 +65,7 @@ K = double_mult(-c1, Q, s1, ec.G)
 print(K[0] == r1)
 
 
-print("\n0. Another message to sign")
+print("\n1. Another message to sign")
 orig_msg2 = "and Paolo is right to be afraid"
 msg2 = sha256(orig_msg2.encode()).digest()
 print(msg2.hex().upper())

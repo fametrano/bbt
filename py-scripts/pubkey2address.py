@@ -32,27 +32,27 @@ print("\n** [2] SHA-256 hashing of the public key:")
 h1 = hashlib.sha256(PubKey_bytes).digest()
 print(h1.hex())
 
-print("\n*** [3] RIPEMD-160 hashing on the result of SHA-256:")
+print("\n*** [3] RIPEMD-160 hashing on the result of SHA-256, i.e., HASH160:")
 h2 = hashlib.new("ripemd160", h1).digest()
 print(h2.hex())
 
 version_byte = "\x00"  # for mainnet
-print("\n*** [4] version byte added in front of RIPEMD-160 hash:")
+print("\n*** [4] version byte added in front of the HASH160:")
 vh160 = b"\x00" + h2
 print(vh160.hex())
 
-print("\n** [5] SHA-256 hashing of the extended RIPEMD-160 result:")
+print("\n** [5] SHA-256 hashing of the extended HASH160:")
 h3 = hashlib.sha256(vh160).digest()
 print(h3.hex())
 
-print("\n** [6] SHA-256 hashing of the result of the previous SHA-256 hash:")
+print("\n** [6] second SHA-256 hashing of the previous result:")
 h4 = hashlib.sha256(h3).digest()
 print(h4.hex())
 
 print("\n** [7] First 4 bytes of the second SHA-256 used as checksum:")
 print(h4[:4].hex())
 
-print("\n** [8] checksum added at the end of extended RIPEMD-160 hash:")
+print("\n** [8] checksum added at the end of extended HASH160:")
 addr = vh160 + h4[:4]
 print(addr.hex())
 
@@ -65,18 +65,24 @@ assert base58.b58encode(vh160) == b"16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM"
 print("\n** steps [5]-[9] are also known as Base58Check b58encode")
 
 
+def hash_160_from_address(addr):
+    return base58.b58decode(addr)[1:21]
+
+
+print("\n*** HASH160 from address")
+print(hash_160_from_address(address).hex())
+
+
 def pubkey_bytes_from_prvkey(prvkey, compressed=True):
     PubKey = mult(prvkey)
     if compressed:
         prefix = b"\x02" if (PubKey[1] % 2 == 0) else b"\x03"
         return prefix + PubKey[0].to_bytes(32, byteorder="big")
-    else:
-        prefix = b"\x04"
-        return (
-            prefix
-            + PubKey[0].to_bytes(32, byteorder="big")
-            + PubKey[1].to_bytes(32, byteorder="big")
-        )
+    return (
+        b"\x04"
+        + PubKey[0].to_bytes(32, byteorder="big")
+        + PubKey[1].to_bytes(32, byteorder="big")
+    )
 
 
 print("\n** [1] Public Key compressed:")
@@ -98,11 +104,3 @@ print("\n*** [9] base58 encoded address from compressed PubKey_bytes")
 address = address_from_pubkey_bytes(PubKey_bytes)
 assert address == b"1PMycacnJaSqwwJqjawXBErnLsZ7RkXUAs"
 print(address)
-
-
-def hash_160_from_address(addr):
-    return base58.b58decode(addr)[1:21]
-
-
-print("\n*** hash160 from address")
-print(hash_160_from_address(address).hex())
