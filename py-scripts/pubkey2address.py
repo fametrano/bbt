@@ -11,7 +11,7 @@
 import hashlib
 
 from btclib import base58
-from btclib.curve import mult
+from btclib.ecc.curve import mult
 
 # https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses
 prvkey = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725

@@ -1,4 +1,4 @@
-from btclib.curve import Curve
+from btclib.ecc.curve import Curve
 
 # low cardinality curves p<100
 ec11_7 = Curve(11, 2, 7, (6, 9), 7, 2, False)

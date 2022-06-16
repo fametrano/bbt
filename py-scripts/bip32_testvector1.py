@@ -11,10 +11,10 @@
 import hmac
 
 from btclib.base58 import b58encode
-from btclib.curve import mult
-from btclib.curve import secp256k1 as ec
-from btclib.secpoint import bytes_from_point
-from btclib.utils import hash160
+from btclib.ecc.curve import mult
+from btclib.ecc.curve import secp256k1 as ec
+from btclib.ecc.sec_point import bytes_from_point
+from btclib.hashes import hash160
 
 # https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 

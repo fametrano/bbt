@@ -8,7 +8,7 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-from btclib.numbertheory import mod_sqrt
+from btclib.ecc.number_theory import mod_sqrt
 
 
 def isprime(n):

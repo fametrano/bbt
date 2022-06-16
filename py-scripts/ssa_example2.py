@@ -10,9 +10,9 @@
 
 from hashlib import sha256
 
-from btclib.curve import double_mult, mult
-from btclib.curve import secp256k1 as ec
-from btclib.ssa import _challenge
+from btclib.ecc.curve import double_mult, mult
+from btclib.ecc.curve import secp256k1 as ec
+from btclib.ecc.ssa import challenge_
 from btclib.utils import int_from_bits
 
 # TODO remove any import from ssa
@@ -49,7 +49,7 @@ assert 0 < k1 < ec.n, "Invalid ephemeral key"
 print(f"eph k: {hex(k1).upper()}")
 
 K1 = mult(k1, ec.G)
-c1 = _challenge(msg1, Q[0], K1[0], ec, sha256)
+c1 = challenge_(msg1, Q[0], K1[0], ec, sha256)
 print(f"   c1: {hex(c1).upper()}")
 
 
@@ -77,7 +77,7 @@ k2 = k1
 print(f"eph k: {hex(k2).upper()}")
 
 K2 = mult(k2, ec.G)
-c2 = _challenge(msg2, Q[0], K2[0], ec, sha256)
+c2 = challenge_(msg2, Q[0], K2[0], ec, sha256)
 print(f"   c2: {hex(c2).upper()}")
 
 

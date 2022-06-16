@@ -10,21 +10,21 @@
 
 from hashlib import sha256
 
-from btclib.curve import mult
-from btclib.curve import secp256k1 as ec
-from btclib.numbertheory import mod_inv
+from btclib.ecc.curve import mult
+from btclib.ecc.curve import secp256k1 as ec
+from btclib.ecc.number_theory import mod_inv
 from btclib.utils import int_from_bits
 
-# note: no import from btclib.dsa
+# note: no import from btclib.ecc.dsa
 # TODO implement pubkey recovery
-# TODO creack private key
+# TODO crack private key
 
 print("\n*** EC:")
 print(ec)
 
 print("\n0. Message to be signed")
-msg1 = "Paolo is afraid of ephemeral random numbers"
-print(msg1)
+msg1 = "Paolo is afraid of ephemeral random numbers".encode()
+print(msg1.decode())
 
 print("1. Key generation")
 q = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
@@ -35,7 +35,7 @@ print(f"PubKey: {'02' if Q[1] % 2 == 0 else '03'} {hex(Q[0]).upper()}")
 
 
 print("2. Sign message")
-msghd1 = sha256(msg1.encode()).digest()
+msghd1 = sha256(msg1).digest()
 # hash(msg) must be transformed into an integer modulo ec.n:
 c1 = int.from_bytes(msghd1, "big") % ec.n
 c1 = int_from_bits(msghd1, ec.nlen) % ec.n
@@ -94,12 +94,12 @@ print(r1 == x % ec.n)
 
 
 print("\n0. Another message to sign")
-msg2 = "and Paolo is right to be afraid"
-print(msg2)
+msg2 = "and Paolo is right to be afraid".encode()
+print(msg2.decode())
 
 
 print("2. Sign message")
-msghd2 = sha256(msg2.encode()).digest()
+msghd2 = sha256(msg2).digest()
 # hash(msg) must be transformed into an integer modulo ec.n:
 c2 = int.from_bytes(msghd2, "big") % ec.n
 c2 = int_from_bits(msghd2, ec.nlen) % ec.n

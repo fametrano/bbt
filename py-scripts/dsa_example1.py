@@ -8,16 +8,17 @@
 # No part of btclib including this file, may be copied, modified, propagated,
 # or distributed except according to the terms contained in the LICENSE file.
 
-from btclib.curve import mult
-from btclib.curve import secp256k1 as ec
-from btclib.dsa import deserialize, recover_pubkeys, serialize, sign, verify
+from btclib.ecc.curve import mult
+from btclib.ecc.curve import secp256k1 as ec
+from btclib.ecc.dsa import recover_pub_keys, sign, verify
+from btclib.ecc.der import Sig
 
 print("\n*** EC:")
 print(ec)
 
 print("\n0. Message to be signed")
-msg1 = "Paolo is afraid of ephemeral random numbers"
-print(msg1)
+msg1 = "Paolo is afraid of ephemeral random numbers".encode()
+print(msg1.decode())
 
 print("1. Key generation")
 q = 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
@@ -28,61 +29,61 @@ print(f"PubKey: {'02' if Q[1] % 2 == 0 else '03'} {hex(Q[0]).upper()}")
 
 
 print("2. Sign message")
-r1, s1 = sign(msg1, q)
-print(f"    r1:    {hex(r1).upper()}")
-print(f"    s1:    {hex(s1).upper()}")
+sig1 = sign(msg1, q)
+print(f"    sig1.r:    {hex(sig1.r).upper()}")
+print(f"    s1:    {hex(sig1.s).upper()}")
 
 
 print("3. Verify signature")
-print(verify(msg1, Q, (r1, s1)))
+print(verify(msg1, Q, sig1))
 
 
 print("4. Recover keys")
-keys = recover_pubkeys(msg1, (r1, s1))
+keys = recover_pub_keys(msg1, sig1)
 for i, key in enumerate(keys):
     print(f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
 
 
 print("\n** Malleated signature")
-sm = ec.n - s1
-print(f"    r1:    {hex(r1).upper()}")
+sm = ec.n - sig1.s
+print(f"    r1:    {hex(sig1.r).upper()}")
 print(f"    sm:    {hex(sm).upper()}")
 
 
 print("** Verify malleated signature")
-print(verify(msg1, Q, (r1, sm)))
+print(verify(msg1, Q, Sig(sig1.r, sm)))
 
 
 print("** Recover keys")
-keys = recover_pubkeys(msg1, (r1, sm))
+keys = recover_pub_keys(msg1, sig1)
 for i, key in enumerate(keys):
     print(f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
 
 
 print("\n0. Another message to sign")
-msg2 = "and Paolo is right to be afraid"
-print(msg2)
+msg2 = "and Paolo is right to be afraid".encode()
+print(msg2.decode())
 
 
 print("2. Sign message")
-r2, s2 = sign(msg2, q)
-print(f"    r2:    {hex(r2).upper()}")
-print(f"    s2:    {hex(s2).upper()}")
+sig2 = sign(msg2, q)
+print(f"    r2:    {hex(sig2.r).upper()}")
+print(f"    s2:    {hex(sig2.s).upper()}")
 
 
 print("3. Verify signature")
-print(verify(msg2, Q, (r2, s2)))
+print(verify(msg2, Q, sig2))
 
 
 print("4. Recover keys")
-keys = recover_pubkeys(msg2, (r2, s2))
+keys = recover_pub_keys(msg2, sig2)
 for i, key in enumerate(keys):
     print(f" key#{i}: {'02' if key[1] % 2 == 0 else '03'} {hex(key[0]).upper()}")
 
 print("\n** Serialize signature")
-dersig = serialize(r2, s2)
+dersig = sig2.serialize()
 print("     bytes:", dersig)
 print("hex-string:", dersig.hex().upper())
-r3, s3 = deserialize(dersig)
-if r2 == r3 and s2 == s3:
-    print("Succesfully deserialized!")
+sig3 = Sig.parse(dersig)
+if sig2.r == sig3.r and sig2.s == sig3.s:
+    print("Succesfully parsed!")

@@ -12,9 +12,9 @@ import random
 import time
 from hashlib import sha256 as hf
 
-from btclib.curve import mult
-from btclib.curve import secp256k1 as ec
-from btclib.ssa import _batch_verify, _sign, _verify
+from btclib.ecc.curve import mult
+from btclib.ecc.curve import secp256k1 as ec
+from btclib.ecc.ssa import _batch_verify, _sign, _verify
 
 random.seed(42)
 
